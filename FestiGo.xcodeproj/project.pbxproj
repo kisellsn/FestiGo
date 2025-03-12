@@ -1,0 +1,470 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B7994C42DD2B05800CF3C23 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0B7994C32DD2B05800CF3C23 /* FirebaseMessaging */; };
+		0B8CB4FC2D81894200636B3E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0B8CB4FB2D81894200636B3E /* FirebaseAuth */; };
+		0B8CB4FE2D81894200636B3E /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0B8CB4FD2D81894200636B3E /* FirebaseCore */; };
+		0B8CB5002D81894200636B3E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0B8CB4FF2D81894200636B3E /* FirebaseFirestore */; };
+		0BB6E6172D9DD5C80045706F /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 0BB6E6162D9DD5C80045706F /* GoogleSignIn */; };
+		0BB6E6192D9DD5C80045706F /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0BB6E6182D9DD5C80045706F /* GoogleSignInSwift */; };
+		0BCC11792DC8F0A000B34D7D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0BCC11782DC8F0A000B34D7D /* Kingfisher */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0B8CB45B2D81882800636B3E /* FestiGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FestiGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B8CB4782D81889D00636B3E /* FestiGo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = FestiGo.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		0BB6E61B2D9DD9D90045706F /* Exceptions for "FestiGo" folder in "FestiGo" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 0B8CB45A2D81882800636B3E /* FestiGo */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		0B8CB45D2D81882800636B3E /* FestiGo */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0BB6E61B2D9DD9D90045706F /* Exceptions for "FestiGo" folder in "FestiGo" target */,
+			);
+			path = FestiGo;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0B8CB4582D81882800636B3E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BCC11792DC8F0A000B34D7D /* Kingfisher in Frameworks */,
+				0BB6E6192D9DD5C80045706F /* GoogleSignInSwift in Frameworks */,
+				0B7994C42DD2B05800CF3C23 /* FirebaseMessaging in Frameworks */,
+				0B8CB4FE2D81894200636B3E /* FirebaseCore in Frameworks */,
+				0BB6E6172D9DD5C80045706F /* GoogleSignIn in Frameworks */,
+				0B8CB4FC2D81894200636B3E /* FirebaseAuth in Frameworks */,
+				0B8CB5002D81894200636B3E /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0B8CB4522D81882800636B3E = {
+			isa = PBXGroup;
+			children = (
+				0B8CB45D2D81882800636B3E /* FestiGo */,
+				0B8CB45C2D81882800636B3E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0B8CB45C2D81882800636B3E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0B8CB45B2D81882800636B3E /* FestiGo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0B8CB47A2D81889D00636B3E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0B8CB45A2D81882800636B3E /* FestiGo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0B8CB4692D81882A00636B3E /* Build configuration list for PBXNativeTarget "FestiGo" */;
+			buildPhases = (
+				0B8CB4572D81882800636B3E /* Sources */,
+				0B8CB4582D81882800636B3E /* Frameworks */,
+				0B8CB4592D81882800636B3E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				0B8CB45D2D81882800636B3E /* FestiGo */,
+			);
+			name = FestiGo;
+			packageProductDependencies = (
+				0B8CB4FB2D81894200636B3E /* FirebaseAuth */,
+				0B8CB4FD2D81894200636B3E /* FirebaseCore */,
+				0B8CB4FF2D81894200636B3E /* FirebaseFirestore */,
+				0BB6E6162D9DD5C80045706F /* GoogleSignIn */,
+				0BB6E6182D9DD5C80045706F /* GoogleSignInSwift */,
+				0BCC11782DC8F0A000B34D7D /* Kingfisher */,
+				0B7994C32DD2B05800CF3C23 /* FirebaseMessaging */,
+			);
+			productName = FestiGo;
+			productReference = 0B8CB45B2D81882800636B3E /* FestiGo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0B8CB4532D81882800636B3E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					0B8CB45A2D81882800636B3E = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = 0B8CB4562D81882800636B3E /* Build configuration list for PBXProject "FestiGo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0B8CB4522D81882800636B3E;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				0B8CB4FA2D81894200636B3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0BB6E6152D9DD5C80045706F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				0BCC11772DC8F0A000B34D7D /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 0B8CB45C2D81882800636B3E /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0B8CB47A2D81889D00636B3E /* Products */;
+					ProjectRef = 0B8CB4782D81889D00636B3E /* FestiGo.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				0B8CB45A2D81882800636B3E /* FestiGo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0B8CB4592D81882800636B3E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0B8CB4572D81882800636B3E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0B8CB4672D81882A00636B3E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 0B8CB45D2D81882800636B3E /* FestiGo */;
+			baseConfigurationReferenceRelativePath = Config.xcconfig;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		0B8CB4682D81882A00636B3E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0B8CB46A2D81882A00636B3E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 0B8CB45D2D81882800636B3E /* FestiGo */;
+			baseConfigurationReferenceRelativePath = Config.xcconfig;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"FestiGo/Preview Content\"";
+				DEVELOPMENT_TEAM = 93A8B8XWV7;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FestiGo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FestiGo;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To monitor near events";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kisellsn.FestiGo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		0B8CB46B2D81882A00636B3E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"FestiGo/Preview Content\"";
+				DEVELOPMENT_TEAM = 93A8B8XWV7;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FestiGo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FestiGo;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To monitor near events";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kisellsn.FestiGo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0B8CB4562D81882800636B3E /* Build configuration list for PBXProject "FestiGo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0B8CB4672D81882A00636B3E /* Debug */,
+				0B8CB4682D81882A00636B3E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0B8CB4692D81882A00636B3E /* Build configuration list for PBXNativeTarget "FestiGo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0B8CB46A2D81882A00636B3E /* Debug */,
+				0B8CB46B2D81882A00636B3E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0B8CB4FA2D81894200636B3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.9.0;
+			};
+		};
+		0BB6E6152D9DD5C80045706F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+		0BCC11772DC8F0A000B34D7D /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.3.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0B7994C32DD2B05800CF3C23 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B8CB4FA2D81894200636B3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		0B8CB4FB2D81894200636B3E /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B8CB4FA2D81894200636B3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		0B8CB4FD2D81894200636B3E /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B8CB4FA2D81894200636B3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		0B8CB4FF2D81894200636B3E /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B8CB4FA2D81894200636B3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		0BB6E6162D9DD5C80045706F /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BB6E6152D9DD5C80045706F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		0BB6E6182D9DD5C80045706F /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BB6E6152D9DD5C80045706F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		0BCC11782DC8F0A000B34D7D /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BCC11772DC8F0A000B34D7D /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 0B8CB4532D81882800636B3E /* Project object */;
+}
