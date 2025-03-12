@@ -1,0 +1,423 @@
+//
+//  Movie.swift
+//  FestiGo
+//
+//  Created by kisellsn on 04/04/2025.
+//
+
+
+import Foundation
+import FirebaseFirestore
+
+
+
+//struct User: Codable {
+//    let userId: String
+//    let isAnonymous: Bool?
+//    let email: String?
+//    let photoUrl: String?
+//    let dateCreated: TimeInterval?
+//    let isPremium: Bool?
+//    let preferences: [String]?
+//    let favoriteEvents: [Event]?
+//    let profileImagePath: String?
+//    let profileImagePathUrl: String?
+//
+//    init(auth: AuthDataResultModel) {
+//        self.userId = auth.id
+//        self.isAnonymous = auth.isAnonymous
+//        self.email = auth.email
+//        self.photoUrl = auth.photoUrl
+//        self.dateCreated = TimeInterval()
+//        self.isPremium = false
+//        self.preferences = nil
+//        self.favoriteEvents = nil
+//        self.profileImagePath = nil
+//        self.profileImagePathUrl = nil
+//    }
+//    
+//    init(
+//        userId: String,
+//        isAnonymous: Bool? = nil,
+//        email: String? = nil,
+//        photoUrl: String? = nil,
+//        dateCreated: TimeInterval? = nil,
+//        isPremium: Bool? = nil,
+//        preferences: [String]? = nil,
+//        favoriteEvents: [Event]? = nil,
+//        profileImagePath: String? = nil,
+//        profileImagePathUrl: String? = nil
+//    ) {
+//        self.userId = userId
+//        self.isAnonymous = isAnonymous
+//        self.email = email
+//        self.photoUrl = photoUrl
+//        self.dateCreated = dateCreated
+//        self.isPremium = isPremium
+//        self.preferences = preferences
+//        self.favoriteEvents = favoriteEvents
+//        self.profileImagePath = profileImagePath
+//        self.profileImagePathUrl = profileImagePathUrl
+//    }
+    
+//    func togglePremiumStatus() -> DBUser {
+//        let currentValue = isPremium ?? false
+//        return DBUser(
+//            userId: userId,
+//            isAnonymous: isAnonymous,
+//            email: email,
+//            photoUrl: photoUrl,
+//            dateCreated: dateCreated,
+//            isPremium: !currentValue)
+//    }
+    
+//    mutating func togglePremiumStatus() {
+//        let currentValue = isPremium ?? false
+//        isPremium = !currentValue
+//    }
+    
+//    enum CodingKeys: String, CodingKey {
+//        case userId = "user_id"
+//        case isAnonymous = "is_anonymous"
+//        case email = "email"
+//        case photoUrl = "photo_url"
+//        case dateCreated = "date_created"
+//        case isPremium = "user_isPremium"
+//        case preferences = "preferences"
+//        case favoriteEvents = "favorite_events"
+//        case profileImagePath = "profile_image_path"
+//        case profileImagePathUrl = "profile_image_path_url"
+//    }
+//
+//    init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        self.userId = try container.decode(String.self, forKey: .userId)
+//        self.isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous)
+//        self.email = try container.decodeIfPresent(String.self, forKey: .email)
+//        self.photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl)
+//        self.dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
+//        self.isPremium = try container.decodeIfPresent(Bool.self, forKey: .isPremium)
+//        self.preferences = try container.decodeIfPresent([String].self, forKey: .preferences)
+//        self.favoriteEvents = try container.decodeIfPresent([Event].self, forKey: .favoriteEvents)
+//        self.profileImagePath = try container.decodeIfPresent(String.self, forKey: .profileImagePath)
+//        self.profileImagePathUrl = try container.decodeIfPresent(String.self, forKey: .profileImagePathUrl)
+//    }
+//    
+//    func encode(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try container.encode(self.userId, forKey: .userId)
+//        try container.encodeIfPresent(self.isAnonymous, forKey: .isAnonymous)
+//        try container.encodeIfPresent(self.email, forKey: .email)
+//        try container.encodeIfPresent(self.photoUrl, forKey: .photoUrl)
+//        try container.encodeIfPresent(self.dateCreated, forKey: .dateCreated)
+//        try container.encodeIfPresent(self.isPremium, forKey: .isPremium)
+//        try container.encodeIfPresent(self.preferences, forKey: .preferences)
+//        try container.encodeIfPresent(self.favoriteEvents, forKey: .favoriteEvents)
+//        try container.encodeIfPresent(self.profileImagePath, forKey: .profileImagePath)
+//        try container.encodeIfPresent(self.profileImagePathUrl, forKey: .profileImagePathUrl)
+//    }
+    
+//}
+struct UserFavouriteEvent: Codable {
+    let eventId: String
+    let dateCreated: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case eventId = "id"
+        case dateCreated = "date_created"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.eventId = try container.decode(String.self, forKey: .eventId)
+        self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.eventId, forKey: .eventId)
+        try container.encode(self.dateCreated, forKey: .dateCreated)
+    }
+    
+}
+
+
+final class UserManager {
+    
+    static let shared = UserManager()
+    private init() { }
+    
+    private let userCollection: CollectionReference = Firestore.firestore().collection("users")
+    private let onboardingResponsesCollection: CollectionReference = Firestore.firestore().collection("onboardingResponses")
+
+    
+    private func userDocument(userId: String) -> DocumentReference {
+        userCollection.document(userId)
+    }
+    private func onboardingResponsesDocument(userId: String) -> DocumentReference {
+        onboardingResponsesCollection.document(userId)
+    }
+    
+    private func userFavouriteEventsCollection(userId: String) -> CollectionReference {
+        userDocument(userId: userId).collection("favourite_events")
+    }
+    
+    private func userFavouriteEventDocument(userId: String, eventId: String) -> DocumentReference {
+        userFavouriteEventsCollection(userId: userId).document(eventId)
+    }
+    
+    private let encoder: Firestore.Encoder = {
+        let encoder = Firestore.Encoder()
+        //        encoder.keyEncodingStrategy = .convertToSnakeCase
+        return encoder
+    }()
+    
+    private let decoder: Firestore.Decoder = {
+        let decoder = Firestore.Decoder()
+        //        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }()
+    
+//    func getUserCityFromOnboardingResponses(userId: String) async throws -> String? {
+//        let snapshot = try await onboardingResponsesDocument(userId: userId).getDocument()
+//        
+//        guard let data = snapshot.data(),
+//          let answers = data["answers"] as? [Any], // або [String] якщо всі елементи у масиві - рядки
+//          answers.count > 4,
+//          let city = answers[3] as? String else {
+//                return nil
+//          }
+//        
+//        return city
+//    }
+    func getUserCityAndRadiusFromOnboardingResponses(userId: String) async throws -> (city: String?, radius: Double?) {
+        let snapshot = try await onboardingResponsesCollection
+            .whereField("userId", isEqualTo: userId)
+            .limit(to: 1)
+            .getDocuments()
+        
+        guard let data = snapshot.documents.first?.data(),
+              let answers = data["answers"] as? [String: [String]] else {
+            print("Failed to parse answers")
+            return (nil, nil)
+        }
+
+        let city = answers["3"]?.first
+        let radiusString = answers["4"]?.first
+        let radius = Double(radiusString?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "") ?? 50
+
+        return (city, radius)
+    }
+
+
+
+
+
+    
+    
+    func addUserFavouriteEvent(userId: String, eventId: String) async throws {
+        let document = userFavouriteEventsCollection(userId: userId).document(eventId)
+
+        let data: [String:Any] = [
+            UserFavouriteEvent.CodingKeys.eventId.rawValue : eventId,
+            UserFavouriteEvent.CodingKeys.dateCreated.rawValue : Timestamp()
+        ]
+        
+        try await document.setData(data, merge: false)
+    }
+    
+    func removeUserFavouriteEvent(userId: String, eventId: String) async throws {
+        try await userFavouriteEventDocument(userId: userId, eventId: eventId).delete()
+    }
+    
+    func getAllUserFavouriteEvents(userId: String) async throws -> [UserFavouriteEvent] {
+        try await userFavouriteEventsCollection(userId: userId).getDocuments(as: UserFavouriteEvent.self)
+    }
+    
+    func getUser(userId: String) async throws -> User {
+        try await userDocument(userId: userId).getDocument(as: User.self)
+    }
+    func getOnboardingResponses(userId: String) async throws  {
+        try await onboardingResponsesDocument(userId: userId).getDocument()
+    }
+//    func getUser(userId: String) async throws -> DBUser {
+//        let snapshot = try await userDocument(userId: userId).getDocument()
+//
+//        guard let data = snapshot.data(), let userId = data["user_id"] as? String else {
+//            throw URLError(.badServerResponse)
+//        }
+//
+//        let isAnonymous = data["is_anonymous"] as? Bool
+//        let email = data["email"] as? String
+//        let photoUrl = data["photo_url"] as? String
+//        let dateCreated = data["date_created"] as? Date
+//
+//        return User(userId: userId, isAnonymous: isAnonymous, email: email, photoUrl: photoUrl, dateCreated: dateCreated)
+//    }
+}
+//
+//    private var userFavoriteProductsListener: ListenerRegistration? = nil
+//    
+//    func createNewUser(user: DBUser) async throws {
+//        try userDocument(userId: user.userId).setData(from: user, merge: false)
+//    }
+    
+//    func createNewUser(auth: AuthDataResultModel) async throws {
+//        var userData: [String:Any] = [
+//            "user_id" : auth.uid,
+//            "is_anonymous" : auth.isAnonymous,
+//            "date_created" : Timestamp(),
+//        ]
+//        if let email = auth.email {
+//            userData["email"] = email
+//        }
+//        if let photoUrl = auth.photoUrl {
+//            userData["photo_url"] = photoUrl
+//        }
+//
+//        try await userDocument(userId: auth.uid).setData(userData, merge: false)
+//    }
+    
+    
+    
+//
+    
+//    func updateUserPremiumStatus(user: DBUser) async throws {
+//        try userDocument(userId: user.userId).setData(from: user, merge: true)
+//    }
+    
+//    func updateUserPremiumStatus(userId: String, isPremium: Bool) async throws {
+//        let data: [String:Any] = [
+//            DBUser.CodingKeys.isPremium.rawValue : isPremium,
+//        ]
+//
+//        try await userDocument(userId: userId).updateData(data)
+//    }
+//    
+//    func updateUserProfileImagePath(userId: String, path: String?, url: String?) async throws {
+//        let data: [String:Any] = [
+//            DBUser.CodingKeys.profileImagePath.rawValue : path,
+//            DBUser.CodingKeys.profileImagePathUrl.rawValue : url,
+//        ]
+//
+//        try await userDocument(userId: userId).updateData(data)
+//    }
+//    
+//    func addUserPreference(userId: String, preference: String) async throws {
+//        let data: [String:Any] = [
+//            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayUnion([preference])
+//        ]
+//
+//        try await userDocument(userId: userId).updateData(data)
+//    }
+//    
+//    func removeUserPreference(userId: String, preference: String) async throws {
+//        let data: [String:Any] = [
+//            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayRemove([preference])
+//        ]
+//
+//        try await userDocument(userId: userId).updateData(data)
+//    }
+//    
+//    func addFavoriteMovie(userId: String, movie: Movie) async throws {
+//        guard let data = try? encoder.encode(movie) else {
+//            throw URLError(.badURL)
+//        }
+//        
+//        let dict: [String:Any] = [
+//            DBUser.CodingKeys.favoriteMovie.rawValue : data
+//        ]
+//
+//        try await userDocument(userId: userId).updateData(dict)
+//    }
+//    
+//    func removeFavoriteMovie(userId: String) async throws {
+//        let data: [String:Any?] = [
+//            DBUser.CodingKeys.favoriteMovie.rawValue : nil
+//        ]
+//
+//        try await userDocument(userId: userId).updateData(data as [AnyHashable : Any])
+//    }
+//    
+//
+//    
+//    func removeListenerForAllUserFavoriteProducts() {
+//        self.userFavoriteProductsListener?.remove()
+//    }
+//    
+//    func addListenerForAllUserFavoriteProducts(userId: String, completion: @escaping (_ products: [UserFavoriteProduct]) -> Void) {
+//        self.userFavoriteProductsListener = userFavoriteProductCollection(userId: userId).addSnapshotListener { querySnapshot, error in
+//            guard let documents = querySnapshot?.documents else {
+//                print("No documents")
+//                return
+//            }
+//            
+//            let products: [UserFavoriteProduct] = documents.compactMap({ try? $0.data(as: UserFavoriteProduct.self) })
+//            completion(products)
+//            
+//            querySnapshot?.documentChanges.forEach { diff in
+//                if (diff.type == .added) {
+//                    print("New products: \(diff.document.data())")
+//                }
+//                if (diff.type == .modified) {
+//                    print("Modified products: \(diff.document.data())")
+//                }
+//                if (diff.type == .removed) {
+//                    print("Removed products: \(diff.document.data())")
+//                }
+//            }
+//        }
+//    }
+    
+//    func addListenerForAllUserFavoriteProducts(userId: String) -> AnyPublisher<[UserFavoriteProduct], Error> {
+//        let publisher = PassthroughSubject<[UserFavoriteProduct], Error>()
+//
+//        self.userFavoriteProductsListener = userFavoriteProductCollection(userId: userId).addSnapshotListener { querySnapshot, error in
+//            guard let documents = querySnapshot?.documents else {
+//                print("No documents")
+//                return
+//            }
+//
+//            let products: [UserFavoriteProduct] = documents.compactMap({ try? $0.data(as: UserFavoriteProduct.self) })
+//            publisher.send(products)
+//        }
+//
+//        return publisher.eraseToAnyPublisher()
+//    }
+//    func addListenerForAllUserFavoriteProducts(userId: String) -> AnyPublisher<[UserFavoriteProduct], Error> {
+//        let (publisher, listener) = userFavoriteProductCollection(userId: userId)
+//            .addSnapshotListener(as: UserFavoriteProduct.self)
+//        
+//        self.userFavoriteProductsListener = listener
+//        return publisher
+//    }
+//    
+//}
+//import Combine
+//
+//struct UserFavoriteProduct: Codable {
+//    let id: String
+//    let productId: Int
+//    let dateCreated: Date
+//    
+//    enum CodingKeys: String, CodingKey {
+//        case id = "id"
+//        case productId = "product_id"
+//        case dateCreated = "date_created"
+//    }
+//    
+//    init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        self.id = try container.decode(String.self, forKey: .id)
+//        self.productId = try container.decode(Int.self, forKey: .productId)
+//        self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
+//    }
+//
+//    func encode(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try container.encode(self.id, forKey: .id)
+//        try container.encode(self.productId, forKey: .productId)
+//        try container.encode(self.dateCreated, forKey: .dateCreated)
+//    }
+//    
+//}
