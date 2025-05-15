@@ -18,7 +18,7 @@ class SettingsViewModel: ObservableObject {
 
     
     private var hasLoadedFromFirestore = false
-
+ 
     init() {
         loadSettings()
     }
@@ -76,14 +76,7 @@ class SettingsViewModel: ObservableObject {
             }
         }
     }
-    func logOut(){
-        do{
-            GIDSignIn.sharedInstance.signOut()
-            try Auth.auth().signOut()
-        }catch{
-            print(error)
-        }
-    }
+    
     
     
 

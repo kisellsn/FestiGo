@@ -10,114 +10,6 @@ import Foundation
 import FirebaseFirestore
 
 
-
-//struct User: Codable {
-//    let userId: String
-//    let isAnonymous: Bool?
-//    let email: String?
-//    let photoUrl: String?
-//    let dateCreated: TimeInterval?
-//    let isPremium: Bool?
-//    let preferences: [String]?
-//    let favoriteEvents: [Event]?
-//    let profileImagePath: String?
-//    let profileImagePathUrl: String?
-//
-//    init(auth: AuthDataResultModel) {
-//        self.userId = auth.id
-//        self.isAnonymous = auth.isAnonymous
-//        self.email = auth.email
-//        self.photoUrl = auth.photoUrl
-//        self.dateCreated = TimeInterval()
-//        self.isPremium = false
-//        self.preferences = nil
-//        self.favoriteEvents = nil
-//        self.profileImagePath = nil
-//        self.profileImagePathUrl = nil
-//    }
-//    
-//    init(
-//        userId: String,
-//        isAnonymous: Bool? = nil,
-//        email: String? = nil,
-//        photoUrl: String? = nil,
-//        dateCreated: TimeInterval? = nil,
-//        isPremium: Bool? = nil,
-//        preferences: [String]? = nil,
-//        favoriteEvents: [Event]? = nil,
-//        profileImagePath: String? = nil,
-//        profileImagePathUrl: String? = nil
-//    ) {
-//        self.userId = userId
-//        self.isAnonymous = isAnonymous
-//        self.email = email
-//        self.photoUrl = photoUrl
-//        self.dateCreated = dateCreated
-//        self.isPremium = isPremium
-//        self.preferences = preferences
-//        self.favoriteEvents = favoriteEvents
-//        self.profileImagePath = profileImagePath
-//        self.profileImagePathUrl = profileImagePathUrl
-//    }
-    
-//    func togglePremiumStatus() -> DBUser {
-//        let currentValue = isPremium ?? false
-//        return DBUser(
-//            userId: userId,
-//            isAnonymous: isAnonymous,
-//            email: email,
-//            photoUrl: photoUrl,
-//            dateCreated: dateCreated,
-//            isPremium: !currentValue)
-//    }
-    
-//    mutating func togglePremiumStatus() {
-//        let currentValue = isPremium ?? false
-//        isPremium = !currentValue
-//    }
-    
-//    enum CodingKeys: String, CodingKey {
-//        case userId = "user_id"
-//        case isAnonymous = "is_anonymous"
-//        case email = "email"
-//        case photoUrl = "photo_url"
-//        case dateCreated = "date_created"
-//        case isPremium = "user_isPremium"
-//        case preferences = "preferences"
-//        case favoriteEvents = "favorite_events"
-//        case profileImagePath = "profile_image_path"
-//        case profileImagePathUrl = "profile_image_path_url"
-//    }
-//
-//    init(from decoder: Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//        self.userId = try container.decode(String.self, forKey: .userId)
-//        self.isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous)
-//        self.email = try container.decodeIfPresent(String.self, forKey: .email)
-//        self.photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl)
-//        self.dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
-//        self.isPremium = try container.decodeIfPresent(Bool.self, forKey: .isPremium)
-//        self.preferences = try container.decodeIfPresent([String].self, forKey: .preferences)
-//        self.favoriteEvents = try container.decodeIfPresent([Event].self, forKey: .favoriteEvents)
-//        self.profileImagePath = try container.decodeIfPresent(String.self, forKey: .profileImagePath)
-//        self.profileImagePathUrl = try container.decodeIfPresent(String.self, forKey: .profileImagePathUrl)
-//    }
-//    
-//    func encode(to encoder: Encoder) throws {
-//        var container = encoder.container(keyedBy: CodingKeys.self)
-//        try container.encode(self.userId, forKey: .userId)
-//        try container.encodeIfPresent(self.isAnonymous, forKey: .isAnonymous)
-//        try container.encodeIfPresent(self.email, forKey: .email)
-//        try container.encodeIfPresent(self.photoUrl, forKey: .photoUrl)
-//        try container.encodeIfPresent(self.dateCreated, forKey: .dateCreated)
-//        try container.encodeIfPresent(self.isPremium, forKey: .isPremium)
-//        try container.encodeIfPresent(self.preferences, forKey: .preferences)
-//        try container.encodeIfPresent(self.favoriteEvents, forKey: .favoriteEvents)
-//        try container.encodeIfPresent(self.profileImagePath, forKey: .profileImagePath)
-//        try container.encodeIfPresent(self.profileImagePathUrl, forKey: .profileImagePathUrl)
-//    }
-    
-//}
 struct UserFavouriteEvent: Codable {
     let eventId: String
     let dateCreated: Date
@@ -141,7 +33,7 @@ struct UserFavouriteEvent: Codable {
     
 }
 
-
+ 
 final class UserManager {
     
     static let shared = UserManager()
@@ -208,12 +100,6 @@ final class UserManager {
 
         return (city, radius)
     }
-
-
-
-
-
-    
     
     func addUserFavouriteEvent(userId: String, eventId: String) async throws {
         let document = userFavouriteEventsCollection(userId: userId).document(eventId)

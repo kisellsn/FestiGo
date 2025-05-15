@@ -79,16 +79,16 @@ struct SettingsView: View {
                     .foregroundColor(.white)
                     .cornerRadius(8)
                 }
-                GroupBox {
-                    Button("Вийти") {
-                        viewModel.logOut()
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.burgundy)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                }
+//                GroupBox {
+//                    Button("Вийти") {
+//                        viewModel.logOut()
+//                    }
+//                    .padding()
+//                    .frame(maxWidth: .infinity)
+//                    .background(Color.burgundy)
+//                    .foregroundColor(.white)
+//                    .cornerRadius(8)
+//                } 
             }
             .padding()
             .navigationBarTitle("Налаштування")

@@ -33,7 +33,6 @@ struct EventCardView: View {
 //                    Rectangle().fill(Color.gray.opacity(0.3))
 //                }
             }
-
             VStack(alignment: .leading, spacing: 8) {
                 Text(event.name)
                     .font(.headline)

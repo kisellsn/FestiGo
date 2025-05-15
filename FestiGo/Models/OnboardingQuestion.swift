@@ -6,13 +6,14 @@
 //
 import UIKit
 
-struct OnboardingQuestion: Codable {
+struct OnboardingQuestion: Codable, Identifiable {
     let id: Int
     let question: String
-    let options: [String]?
+    let helperText: String?
+    let subtitle: String?
     let inputType: InputType
+    let options: [String]?
 }
-
 enum InputType: String, Codable {
     case multipleChoice
     case singleChoice

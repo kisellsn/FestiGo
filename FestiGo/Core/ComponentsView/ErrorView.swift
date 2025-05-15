@@ -14,7 +14,6 @@ enum AuthError: Error {
 
 struct ErrorView: View {
     let message: String
-//    var backgroundColor: Color = .white
     var foregroundColor: Color = .burgundy
     
     var body: some View {

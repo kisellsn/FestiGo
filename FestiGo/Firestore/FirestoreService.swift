@@ -20,7 +20,7 @@ class FirestoreService {
             if firestoreListener != nil {
                 return
             }
-
+ 
             firestoreListener = db.collection("events").addSnapshotListener { snapshot, error in
                 if let error = error {
                     completion(.failure(error))

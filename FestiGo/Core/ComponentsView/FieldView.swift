@@ -18,7 +18,6 @@ struct FieldView: View {
     
 //    let errorMessage: String?
 //    let showErrors: Bool
-    
     var body: some View {
         VStack(alignment: .leading, spacing: 5){
             HStack {

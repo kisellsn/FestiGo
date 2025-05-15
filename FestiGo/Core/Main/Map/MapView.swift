@@ -27,9 +27,7 @@ struct MapView: View {
         )
     )
     @State private var selectedEvent: Event? = nil
-    
-    
-
+        
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -48,7 +46,33 @@ struct MapView: View {
                     }
                 }
                 .listStyle(.plain)
-                
+                if eventViewModel.isLoadingEvents && eventViewModel.events.isEmpty {
+                    VStack {
+                        ProgressView("Завантаження подій…")
+                            .padding()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.white.opacity(0.8)) // optional: slight white background
+                }else if eventViewModel.events.isEmpty {
+                    VStack(spacing: 16) {
+                        Image(systemName: "magnifyingglass.circle")
+                            .resizable()
+                            .frame(width: 80, height: 80)
+                            .foregroundColor(.gray.opacity(0.5))
+                        
+                        Text("Схоже, нічого не знайшлося")
+                            .font(.headline)
+                            .foregroundColor(.gray)
+                        
+                        Text("Спробуй змінити фільтри або перевір підключення до мережі.")
+                            .font(.subheadline)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.gray.opacity(0.7))
+                            .padding(.horizontal, 30)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 50)
+                }
             }
             .onAppear {
                 mapViewModel.loadUserLocation()

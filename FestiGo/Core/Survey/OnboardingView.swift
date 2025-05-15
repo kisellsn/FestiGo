@@ -14,88 +14,120 @@ struct OnboardingView: View {
     @StateObject var viewModel = OnboardingViewModel()
     @State var locationManager = LocationSearchManager()
     @StateObject private var locationFetcher = LocationFetcher()
-    
+
     var onComplete: () -> Void
-    
+
     var body: some View {
-        VStack {
-            // Question
-            Text(viewModel.questions[viewModel.currentStep].question)
-                .font(.title2)
-                .multilineTextAlignment(.center)
-                .padding()
+        ZStack {
+            Color.ultraViolet.ignoresSafeArea()
 
-            let question = viewModel.questions[viewModel.currentStep]
+            VStack(spacing: 0) {
+                // Верхня частина — фіолетовий фон із заголовком
+                VStack(alignment: .leading, spacing: 16) {
+                    // "Крок X з Y"
+                    Text("Крок \(viewModel.currentStep + 1) з \(viewModel.questions.count)")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white.opacity(0.6))
+                        .padding(.top, 5)
+                        .padding(.horizontal)
 
-            // Options (if any)
-            if let options = question.options {
-                ForEach(options, id: \.self) { option in
-                    ChoiceButton(
-                        title: option,
-                        isSelected: viewModel.isSelected(step: viewModel.currentStep, option: option)
-                    ) {
-                        viewModel.toggleAnswer(for: viewModel.currentStep, option: option)
-                    }
-                }
-            }
+                    VStack(spacing: 12) {
+                        Text(viewModel.questions[viewModel.currentStep].question)
+                            .font(.title2)
+                            .bold()
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 30)
 
-            // Location Input
-            if question.inputType == .location {
-                LocationInputView(
-                    query: $locationManager.query,
-                    results: locationManager.results,
-                    status: locationManager.status,
-                    onLocationSelect: { selected in
-                        locationManager.query = selected.title
-                        viewModel.answers[viewModel.currentStep] = ["\(selected.title), \(selected.subtitle)"]
-                        locationManager.results = []
-                        print(viewModel.answers)
-                    },
-                    onDetectTap: {
-                        locationFetcher.requestLocation { detectedLocation in
-                            locationManager.query = detectedLocation
-                            viewModel.answers[viewModel.currentStep] = [detectedLocation]
+                        if let subtitle = viewModel.questions[viewModel.currentStep].subtitle, !subtitle.isEmpty {
+                            Text(subtitle)
+                                .font(.subheadline)
+                                .foregroundColor(.white.opacity(0.8))
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 30)
                         }
-                        print(viewModel.answers)
-                    },
-                    onQueryChange: {
-//                        viewModel.answers[viewModel.currentStep] = []
-                        print(viewModel.answers)
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 20)
+                }
+                .padding(.bottom, 30)
+                .background(
+                    Color.ultraViolet
+                        .edgesIgnoringSafeArea(.top)
+                )
+
+
+                Spacer(minLength: 0)
+                
+
+                // Нижня частина — білого кольору
+                VStack(spacing: 0) {
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            QuestionView(
+                                question: viewModel.questions[viewModel.currentStep],
+                                selectedAnswers: viewModel.answers[viewModel.currentStep] ?? [],
+                                onSelect: { option in
+                                    viewModel.toggleAnswer(for: viewModel.currentStep, option: option)
+                                },
+                                locationManager: $locationManager,
+                                locationFetcher: locationFetcher
+                            )
+                            .padding(.horizontal)
+                            .padding(.top, 30)
+                        }
+                        .padding(.bottom, 150)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    }
+
+                    Spacer()
+                }
+                .background(
+                    Color.white
+                        .clipShape(RoundedCorner(radius: 30, corners: [.topLeft, .topRight]))
+                        .edgesIgnoringSafeArea(.bottom)
                 )
             }
-
-            // Navigation buttons
-            HStack {
-                if viewModel.currentStep > 0 {
-                    Button("Назад") {
-                        viewModel.previousQuestion()
-                    }
-                    .modifier(NavButtonStyle(background: .persianPink))
-                }
-
+            
+            // Навігаційні кнопки (завжди внизу)
+            VStack {
                 Spacer()
-
-                Button(viewModel.currentStep == viewModel.questions.count - 1 ? "Завершити" : "Далі") {
-                    if viewModel.currentStep == viewModel.questions.count - 1 {
-                        viewModel.saveCurrentUserAnswers { success in
-                            if success {
-                                onComplete()
-                            } else {
-                                print("Saving failed.")
-                            }
+                HStack(spacing: 15) {
+                    if viewModel.currentStep > 0 {
+                        Button("Назад") {
+                            viewModel.previousQuestion()
                         }
-                    } else {
-                    viewModel.nextQuestion()
+                        .buttonStyle(OnboardingNavButtonStyle(color: .persianPink))
+                        .cornerRadius(50)
                     }
+
+                    Button(viewModel.isLastStep ? "Завершити" : "Далі") {
+                        if viewModel.isLastStep {
+                            viewModel.saveCurrentUserAnswers { success in
+                                if success {
+                                    onComplete()
+                                }
+                            }
+                        } else {
+                            viewModel.nextQuestion()
+                        }
+                    }
+                    // TODO:
+                    .disabled(!viewModel.isCurrentStepValid(with: locationManager))
+                    .opacity(viewModel.isCurrentStepValid(with: locationManager) ? 1 : 0.5)
+                    .buttonStyle(OnboardingNavButtonStyle(color: .ultraViolet))
+                    .cornerRadius(50)
                 }
-                .disabled(!viewModel.isCurrentStepValid())
-                .opacity(viewModel.isCurrentStepValid() ? 1.0 : 0.5)
-                .modifier(NavButtonStyle(background: .ultraViolet))
+                .padding(.top, 5)
+                .padding(.horizontal)
+                .padding(.bottom, 30)
+                .background(Color.white.ignoresSafeArea(edges: .bottom))
             }
-            .padding(.top)
         }
-        .padding()
     }
 }
 

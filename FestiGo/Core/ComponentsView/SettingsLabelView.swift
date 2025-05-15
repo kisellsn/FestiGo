@@ -21,7 +21,6 @@ struct SettingsLabelView: View {
         }
     }
 }
-
 #Preview {
     SettingsLabelView(labelText: "String", labelImage: "paperplane.circle.fill")
 }

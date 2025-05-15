@@ -101,25 +101,38 @@ class OnboardingViewModel: ObservableObject {
                 }
             }
     }
-
-
     
     func isSelected(step: Int, option: String) -> Bool {
         return answers[step]?.contains(option) ?? false
     }
     
-    func isCurrentStepValid() -> Bool {
+    func isCurrentStepValid(with locationManager: LocationSearchManager? = nil) -> Bool {
         let question = questions[currentStep]
         
         switch question.inputType {
         case .multipleChoice, .singleChoice:
             return answers[currentStep]?.isEmpty == false
+
         case .textInput:
             let text = answers[currentStep]?.first ?? ""
             return !text.trimmingCharacters(in: .whitespaces).isEmpty
+
         case .location:
-            return true
+            guard let locationManager = locationManager else { return false }
+            let text = locationManager.query.trimmingCharacters(in: .whitespaces)
+            return !text.isEmpty
+//            && (
+//                locationManager.results.contains(where: { $0.title == text }) ||
+//                answers[currentStep]?.first != nil 
+//            )
         }
     }
 
+
+}
+
+extension OnboardingViewModel {
+    var isLastStep: Bool {
+        currentStep == questions.count - 1
+    }
 }

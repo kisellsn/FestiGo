@@ -37,8 +37,7 @@ struct MainView: View {
                 .tabItem{
                     Label("Головна", systemImage: "house")
                 }
-            
-            MapView()
+             MapView()
                 .tabItem{
                     Label("Карта", systemImage: "map")
                 }
@@ -50,7 +49,7 @@ struct MainView: View {
                 .tabItem{
                     Label("Профіль", systemImage: "person.circle")
                 }
-        }
+            }
         .tint(Color.ultraViolet)
     }
 }

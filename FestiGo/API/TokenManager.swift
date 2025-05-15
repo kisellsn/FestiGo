@@ -72,7 +72,7 @@ class TokenManager {
     /// отримання JWT
     func sendUserIdToBackend(_ userId: String) {
         guard let request = TokenManager.createRequest(endpoint: "/auth/firebase-login", method: "POST") else { return }
-
+ 
         var modifiedRequest = request
         modifiedRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 

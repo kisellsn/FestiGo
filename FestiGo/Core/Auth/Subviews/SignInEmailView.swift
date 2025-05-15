@@ -9,8 +9,12 @@
 import SwiftUI
 
 struct SignInEmailView: View {
-    
     @StateObject private var viewModel = SignInEmailViewModel(userValidator: UserValidator())
+    
+//    init(viewModel: SignInEmailViewModel = SignInEmailViewModel(userValidator: UserValidator())) {
+//           _viewModel = StateObject(wrappedValue: viewModel)
+//       }
+       
     
     var body: some View {
     
@@ -79,3 +83,12 @@ struct SignInEmailView: View {
 #Preview {
     SignInEmailView()
 }
+//#Preview {
+//    let mockValidator = UserValidator()
+//    mockValidator.email = "s@gmail.com"
+//    mockValidator.password = "12345678"
+//    
+//    let mockViewModel = SignInEmailViewModel(userValidator: mockValidator)
+//    
+//    return SignInEmailView(viewModel: mockViewModel)
+//}

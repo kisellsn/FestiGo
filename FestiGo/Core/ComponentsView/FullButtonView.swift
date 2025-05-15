@@ -30,7 +30,7 @@ struct FullButtonView: View {
                             .frame(width: 20, height: 20)
                             .foregroundColor(textColor)
                     }
-                    
+            
                     Text(title)
                         .font(.headline)
                         .foregroundColor(textColor)

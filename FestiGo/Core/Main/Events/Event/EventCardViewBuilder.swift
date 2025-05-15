@@ -24,7 +24,6 @@ struct EventCardViewBuilder: View {
         }
     }
 }
-
 #Preview {
     EventCardViewBuilder(eventId: "L2F1dGhvcml0eS9ob3Jpem9uL2NsdXN0ZXJlZF9ldmVudC8yMDI1LTA0LTAxfDQyMjAyNDcxMjg0NTQzNTgyNjM=")
 }

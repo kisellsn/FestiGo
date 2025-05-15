@@ -27,24 +27,65 @@ struct FavouritesView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(groupedEvents, id: \.date) { group in
-                    Section(header: Text(formattedDate(group.date))) {
-                        ForEach(group.events) { event in
-                            NavigationLink(destination: EventDetailView(event: event)) {
-                                EventCardView(event: event)
+            ZStack {
+                // Фонове зображення
+                Image(uiImage: #imageLiteral(resourceName: "bgPic"))
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+
+                if favouritesVM.isLoading {
+                    ProgressView("Завантаження...")
+                        .font(.title3)
+                        .foregroundColor(.gray)
+                        .padding()
+                } else if groupedEvents.isEmpty {
+                    VStack {
+                        Spacer()
+                        Text("Ще немає збережених подій")
+                            .font(.title3)
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                            .transition(.opacity)
+                        Spacer()
+                    }
+                } else {
+                    List {
+                        ForEach(groupedEvents, id: \.date) { group in
+                            Section(header: Text(formattedDate(group.date))) {
+                                ForEach(group.events) { event in
+                                    NavigationLink(destination: EventDetailView(event: event)) {
+                                        EventCardView(event: event)
+                                    }
+                                }
                             }
                         }
                     }
+                    .scrollContentBackground(.hidden)
+                    .padding(.top, 100)
+                    .transition(.opacity)
                 }
             }
-            .navigationTitle("Вподобане")
-            .onAppear{
+            .onAppear {
                 favouritesVM.getFavourites()
             }
-
+//            .onReceive(NotificationCenter.default.publisher(for: .favouritesDidChange)) { _ in
+//                favouritesVM.getFavourites()
+//            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Text("Вподобане")
+                        .font(.system(size: 28, weight: .bold, design: .rounded))
+                        .foregroundColor(Color.black)
+                        .padding(.top, 7)
+                }
+            }
+            .toolbarBackground(Color.white.opacity(0.1), for: .navigationBar)
         }
     }
+
+
     
     private func formattedDate(_ date: Date) -> String {
         let formatter = DateFormatter()

@@ -44,7 +44,7 @@ struct VerticalEventCardView: View {
             Text(event.startTime, style: .date)
                 .font(.caption)
                 .foregroundColor(.gray)
-
+ 
 //            if let price = event.price {
 //                Text("Price: \(price)")
 //                    .font(.caption)

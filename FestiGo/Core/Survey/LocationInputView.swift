@@ -61,7 +61,6 @@ struct LocationInputView: View {
                     }
                 }
                 .padding(.horizontal)
-
             case .result where query.isEmpty:
                 EmptyView()
 

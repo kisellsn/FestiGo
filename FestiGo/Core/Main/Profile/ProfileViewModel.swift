@@ -7,11 +7,12 @@
 import FirebaseAuth
 import FirebaseFirestore
 import Foundation
+import GoogleSignIn
 
 
 class ProfileViewModel: ObservableObject {
     @Published var user: User? = nil
-
+    
     
     func fetchUser(){
         guard let userId = Auth.auth().currentUser?.uid else{
@@ -34,5 +35,13 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
+    func logOut(){
+        do{
+            GIDSignIn.sharedInstance.signOut()
+            try Auth.auth().signOut()
+        }catch{
+            print(error)
+        }
+    }
     
 }

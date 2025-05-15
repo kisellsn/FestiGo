@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import CoreLocation
 
-
+ 
 class MapViewModel: ObservableObject {
     @Published var userCoordinate: CLLocationCoordinate2D?
 

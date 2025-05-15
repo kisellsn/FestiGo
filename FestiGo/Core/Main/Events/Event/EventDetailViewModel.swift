@@ -11,7 +11,7 @@ import SwiftUI
 
 import SwiftUI
 import FirebaseAuth
-
+ 
 @MainActor
 class EventDetailViewModel: ObservableObject {
     @Published var event: Event?
@@ -61,23 +61,23 @@ class EventDetailViewModel: ObservableObject {
               let userId = Auth.auth().currentUser?.uid else { return }
 
         if isLiked {
-            removeFromFavourites(userId: userId, eventId: eventId)
+            await removeFromFavourites(userId: userId, eventId: eventId)
             isLiked = false
         } else {
-            addUserFavouriteEvent(userId: userId, eventId: eventId)
+            await addUserFavouriteEvent(userId: userId, eventId: eventId)
             isLiked = true
         }
-        
+//        NotificationCenter.default.post(name: .favouritesDidChange, object: nil)
+    }
 
-    }
+
     
-    func removeFromFavourites(userId: String, eventId: String) {
-        Task {
-            try? await UserManager.shared.removeUserFavouriteEvent(userId: userId, eventId: eventId)
-        }
+    func removeFromFavourites(userId: String, eventId: String) async {
+        try? await UserManager.shared.removeUserFavouriteEvent(userId: userId, eventId: eventId)
     }
+
     
-    func addUserFavouriteEvent(userId: String, eventId: String) {
+    func addUserFavouriteEvent(userId: String, eventId: String) async{
         Task {
 //            let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
             try? await UserManager.shared.addUserFavouriteEvent(userId: userId, eventId: eventId)
@@ -100,8 +100,6 @@ class EventDetailViewModel: ObservableObject {
             rootVC.present(av, animated: true, completion: nil)
         }
     }
-
-    
 }
 
 private extension String {

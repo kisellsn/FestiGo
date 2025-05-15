@@ -30,6 +30,11 @@ class EventListViewModel: ObservableObject {
         }
     }
     
+    @Published var recommendedEventIds: [String] = []
+    @Published var recommendedEvents: [Event] = []
+    @Published var isLoadingEvents: Bool = false
+
+    
 //    private var firestoreListener: ListenerRegistration? = nil
 //    private var cancellables = Set<AnyCancellable>()
 //
@@ -68,13 +73,13 @@ class EventListViewModel: ObservableObject {
         var label: String {
             switch self {
                 case .all: return "Все"
-                case .music: return "Музика"
-                case .show: return "Вистави/Театр"
-                case .festival: return "Фестивалі"
-                case .exhibition: return "Виставки"
-                case .cinema: return "Кіно"
-                case .education: return "Освіта"
-                case .sport: return "Спорт/Активний відпочинок"
+                case .music: return "🎶Музика"
+                case .show: return "🎭Вистави/Театр"
+                case .festival: return "🎡Фестивалі"
+                case .exhibition: return "🖼️Виставки"
+                case .cinema: return "🎬Кіно"
+                case .education: return "📚Освіта"
+                case .sport: return "⚡Спорт/Активний відпочинок"
             }
         }
     }
@@ -100,7 +105,6 @@ class EventListViewModel: ObservableObject {
     }
 
     //MARK: - Type filter
-
     enum TypeOption: String, CaseIterable {
         case noType = "Усі"
         case online = "Онлайн"
@@ -263,6 +267,7 @@ class EventListViewModel: ObservableObject {
                         self.events = []
                         self.lastDocument = nil
                 }
+                self.isLoadingEvents = true
 
                 let (newEvents, lastDocument) = try await EventsManager.shared.getAllEvents(
                     selectedCategories: selectedCategories,
@@ -278,72 +283,54 @@ class EventListViewModel: ObservableObject {
                 if let lastDocument {
                     self.lastDocument = lastDocument
                 }
+                self.isLoadingEvents = false
             } catch {
                 print("Error fetching events: \(error)")
             }
+            
         }
+        
     }
     
     func getUserRecommendations() {
-        guard let userId = Auth.auth().currentUser?.uid else {
-            print("User not logged in.")
-            return
-        }
-
-        guard let token = TokenManager.load() else {
-            print("Failed to load token.")
-            return
-        }
-
-        // Створюємо запит на сервер
-        let urlString = "\(TokenManager.serverBaseUrl ?? "")/get_recommendations"
-        guard let url = URL(string: urlString) else { return }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        // Додаємо параметри до запиту (user_id)
-        let queryItems = [URLQueryItem(name: "user_id", value: userId)]
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        components?.queryItems = queryItems
-        guard let finalUrl = components?.url else { return }
-        
-        request.url = finalUrl
-
-        // Відправляємо запит
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("❌ Error getting recommendations: \(error.localizedDescription)")
-                return
+      
+    }
+    func fetchRecommendations() {
+        UserProfileService.shared.getRecommendations { [weak self] ids in
+            DispatchQueue.main.async {
+                self?.recommendedEventIds = ids
+                self?.fetchRecommendedEvents()
+                
+                UserProfileService.shared.updateProfile { success in
+                   if success {
+                       print("✅ Профіль успішно оновлено після отримання рекомендацій")
+                   } else {
+                       print("❌ Не вдалося оновити профіль після отримання рекомендацій")
+                   }
+               }
             }
+        }
+    }
 
-            guard let data = data else {
-                print("❌ No data received.")
-                return
-            }
-
+    func fetchRecommendedEvents() {
+        Task {
             do {
-                // Декодуємо рекомендації з відповіді сервера
-                let recommendationsResponse = try JSONDecoder().decode([String: [String]].self, from: data)
-                if let recommendations = recommendationsResponse["recommendations"] {
-                    // Збереження або використання отриманих рекомендацій
-                    DispatchQueue.main.async {
-                        self.handleRecommendations(recommendations)
-                    }
-                } else {
-                    print("❌ No recommendations found.")
+                let events = try await EventsManager.shared.getEventsByIds(ids: recommendedEventIds)
+                
+                let ordered = recommendedEventIds.compactMap { id in
+                    events.first(where: { $0.id == id })
+                }
+
+                DispatchQueue.main.async {
+                    self.recommendedEvents = ordered
                 }
             } catch {
-                print("❌ Failed to decode recommendations: \(error.localizedDescription)")
+                print("❌ Не вдалося завантажити рекомендовані події: \(error)")
             }
-        }.resume()
+        }
     }
 
-    private func handleRecommendations(_ recommendations: [String]) {
-        // Обробка рекомендацій, наприклад, оновлення внутрішнього стану для відображення на UI
-        print("Received recommendations: \(recommendations)")
-    }
+
 
 
     

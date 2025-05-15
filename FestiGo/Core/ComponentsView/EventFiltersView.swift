@@ -42,7 +42,6 @@ struct EventFiltersView: View {
                 } label: {
                     Label(viewModel.selectedCity.label, systemImage: "mappin.and.ellipse")
                 }
-
                 Spacer(minLength: 12)
                 Button {
                     showingDatePicker.toggle()

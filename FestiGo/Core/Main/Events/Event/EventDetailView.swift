@@ -56,21 +56,12 @@ struct EventDetailView: View {
             
             VStack(alignment: .leading, spacing: 16) {
                 
-                Text(event.name)
-                    .font(.title)
-                    .bold()
-                    .padding(.top, 20)
                 
-                // 3. Description
-                if let description = event.description {
-                    Text(description)
-                        .foregroundColor(.secondary)
-                }
                 
                 // Час проведення
                 HStack(alignment: .center, spacing: 12) {
                     Image(systemName: "calendar")
-                        .foregroundStyle(.ultraViolet)
+                        .foregroundStyle(.gray)
                     
                     if let endTime = event.endTime {
                         if Calendar.current.isDate(event.startTime, inSameDayAs: endTime) {
@@ -84,12 +75,22 @@ struct EventDetailView: View {
                 }
                 .font(.subheadline)
                 .foregroundColor(.gray)
+                .padding(.top, 15)
             
                 
-
-
-//
-                // TODO: cute minimap
+                
+                Text(event.name)
+                    .font(.title)
+                    .bold()
+                    
+                // 3. Description
+                if let description = event.description {
+                    Text(description)
+                        .foregroundColor(.secondary)
+                }
+                
+                Divider()
+                
                 // 5. Venue & MiniMap (Sticker Style)
                 if let venue = event.venue {
                     VStack(alignment: .leading, spacing: 12) {
@@ -104,7 +105,7 @@ struct EventDetailView: View {
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                         }
-                        
+                    
                         // Mini Map Style Button
                         MiniMapView(coordinate: CLLocationCoordinate2D(latitude: venue.latitude, longitude: venue.longitude))
                             .onTapGesture {

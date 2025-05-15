@@ -63,7 +63,6 @@ final class EventsManager {
     private func getAllEvents( count: Int, lastDocument: DocumentSnapshot?) async throws -> (events: [Event], lastDocument: DocumentSnapshot?) {
         let query: Query = getAllEventsQuery()
 
-
         return try await query
                 .startOptionally(afterDocument: lastDocument)
                 .getDocumentsWithSnapshot(as: Event.self)
@@ -150,6 +149,26 @@ final class EventsManager {
     func getAllEventsCount() async throws -> Int {
         try await eventsCollection
             .aggregateCount()
+    }
+    
+    func getEventsByIds(ids: [String]) async throws -> [Event] {
+        guard !ids.isEmpty else { return [] }
+
+        let chunkedIds = ids.chunked(into: 10)
+        var allEvents: [Event] = []
+
+        for chunk in chunkedIds {
+            let query = eventsCollection
+                .whereField(FieldPath.documentID(), in: chunk)
+            let snapshot = try await query.getDocuments()
+
+            let events = snapshot.documents.compactMap { doc in
+                try? doc.data(as: Event.self)
+            }
+            allEvents.append(contentsOf: events)
+        }
+
+        return allEvents
     }
 }
 

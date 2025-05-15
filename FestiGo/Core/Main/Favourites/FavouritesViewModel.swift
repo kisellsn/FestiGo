@@ -11,11 +11,17 @@ import FirebaseAuth
 class FavouritesViewModel: ObservableObject {
     @Published private(set) var userFavouriteEvents: [UserFavouriteEvent] = []
     @Published private(set) var eventsMap: [String: Event] = [:]
+    @Published var isLoading = true
+
     
 
     func getFavourites() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+
         Task {
-            guard let userId = Auth.auth().currentUser?.uid else { return }
+            isLoading = true
+            defer { isLoading = false }
+            
             self.userFavouriteEvents = try await UserManager.shared.getAllUserFavouriteEvents(userId: userId)
             self.eventsMap = [:]
 
@@ -26,8 +32,6 @@ class FavouritesViewModel: ObservableObject {
             }
         }
     }
-        
-   
-    
 }
+
 

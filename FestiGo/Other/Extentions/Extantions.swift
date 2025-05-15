@@ -98,5 +98,14 @@ extension Query {
 }
 
 extension Notification.Name {
-    static let favouritesUpdated = Notification.Name("favouritesUpdated")
+    static let favouritesDidChange = Notification.Name("favouritesDidChange")
+}
+
+
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        stride(from: 0, to: count, by: size).map {
+            Array(self[$0..<Swift.min($0 + size, count)])
+        }
+    }
 }

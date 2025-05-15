@@ -28,7 +28,7 @@ class MainViewModel: ObservableObject {
             }
         }
     }
-    
+     
     public var isSignIn: Bool {
         return Auth.auth().currentUser != nil
     }

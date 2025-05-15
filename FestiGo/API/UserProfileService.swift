@@ -37,7 +37,7 @@ class UserProfileService {
             completion?(false)
             return
         }
-
+ 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("❌ Update profile error: \(error.localizedDescription)")

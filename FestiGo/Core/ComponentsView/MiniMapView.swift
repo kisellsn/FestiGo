@@ -20,7 +20,6 @@ struct MiniMapView: View {
             span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         ))
     }
-
     var body: some View {
         Map(coordinateRegion: $region, annotationItems: [MapPin(coordinate: coordinate)]) { pin in
             MapMarker(coordinate: pin.coordinate, tint: .purple)
