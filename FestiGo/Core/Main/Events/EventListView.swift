@@ -123,12 +123,14 @@ struct EventListView: View {
         .onAppear {
             if !didAppear{
                 eventViewModel.getEvents()
-//                eventViewModel.addListenerForEvents()
                 eventViewModel.fetchRecommendations()
+                eventViewModel.addRealtimeEventsListener()
                 didAppear = true
             }
         }
+        
     }
+    
 }
 
 

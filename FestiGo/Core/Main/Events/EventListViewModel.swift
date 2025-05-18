@@ -33,23 +33,29 @@ class EventListViewModel: ObservableObject {
     @Published var recommendedEventIds: [String] = []
     @Published var recommendedEvents: [Event] = []
     @Published var isLoadingEvents: Bool = false
-
     
-//    private var firestoreListener: ListenerRegistration? = nil
-//    private var cancellables = Set<AnyCancellable>()
-//
-//    init() {
-//        observeFilters()
-//    }
+    private var firestoreListener: ListenerRegistration? = nil
+    private var cancellables = Set<AnyCancellable>()
+    private func setupBindings() {
+        $events
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.fetchRecommendations()
+            }
+            .store(in: &cancellables)
+    }
+
     init() {
         fetchAllCities()
-        print(self.allCitiesMap)
+        setupBindings()
         Task {
             await applyUserDefaultCity()
         }
     }
+    deinit {
+        firestoreListener?.remove()
+    }
 
-        
     func updateDateRange() {
         if let start = startDate, let end = endDate {
             dateRange = start...end
@@ -243,22 +249,22 @@ class EventListViewModel: ObservableObject {
         events = MockEvents.loadEvents()
     }
     
-//    func addListenerForEvents() {
-//        guard let userId = Auth.auth().currentUser?.uid else { return }
-//
-////        UserManager.shared.addListenerForAllUserFavoriteProducts(userId: authDataResult.uid) { [weak self] products in
-////            self?.userFavoriteProducts = products
-////        }
-//        
-//        EventsManager.shared.addListenerForAllEvents(completion: userId)
-//            .sink { completion in
-//                
-//            } receiveValue: { [weak self] products in
-//                self?.userFavoriteProducts = products
-//            }
-//            .store(in: &cancellables)
-//
-//    }
+    func addRealtimeEventsListener() {
+        // Зупини попередній, якщо існує
+        firestoreListener?.remove()
+
+        firestoreListener = EventsManager.shared.addEventsListener(
+            selectedCategories: selectedCategories,
+            city: selectedCity.value,
+            isOnline: isOnline?.typeKey,
+            startDate: startDate,
+            endDate: endDate
+        ) { [weak self] newEvents in
+            DispatchQueue.main.async {
+                self?.events = newEvents
+            }
+        }
+    }
 
     func getEvents(reset: Bool = false) {
         Task {

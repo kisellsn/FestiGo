@@ -121,29 +121,49 @@ final class EventsManager {
 //        self.eventsListener?.remove()
 //    }
 //    
-//    func addListenerForAllEvents(completion: @escaping (_ events: [Event]) -> Void) {
-//        self.eventsListener = eventsCollection.addSnapshotListener { querySnapshot, error in
-//            guard let documents = querySnapshot?.documents else {
-//                print("No documents")
-//                return
-//            }
-//            
-//            let events: [Event] = documents.compactMap({ try? $0.data(as: Event.self) })
-//            completion(events)
-//            
-//            querySnapshot?.documentChanges.forEach { diff in
-//                if (diff.type == .added) {
-//                    print("New event: \(diff.document.data())")
-//                }
-//                if (diff.type == .modified) {
-//                    print("Modified event: \(diff.document.data())")
-//                }
-//                if (diff.type == .removed) {
-//                    print("Removed event: \(diff.document.data())")
-//                }
-//            }
-//        }
-//    }
+    func addEventsListener(
+        selectedCategories: [String]? = nil,
+        city: String? = nil,
+        isOnline: Bool? = nil,
+        startDate: Date? = nil,
+        endDate: Date? = nil,
+        onUpdate: @escaping ([Event]) -> Void
+    ) -> ListenerRegistration {
+        var query: Query = Firestore.firestore().collection("events")
+
+        if let categories = selectedCategories, !categories.isEmpty {
+            query = query.whereField("category", in: categories)
+        }
+
+        if let city = city {
+            query = query.whereField("city", isEqualTo: city)
+        }
+
+        if let isOnline = isOnline {
+            query = query.whereField("isOnline", isEqualTo: isOnline)
+        }
+
+        if let start = startDate {
+            query = query.whereField("startDate", isGreaterThanOrEqualTo: Timestamp(date: start))
+        }
+
+        if let end = endDate {
+            query = query.whereField("startDate", isLessThanOrEqualTo: Timestamp(date: end))
+        }
+
+        return query.addSnapshotListener { snapshot, error in
+            guard let documents = snapshot?.documents, error == nil else {
+                print("❌ Error listening to events: \(error?.localizedDescription ?? "Unknown error")")
+                return
+            }
+
+            let events: [Event] = documents.compactMap { doc in
+                try? doc.data(as: Event.self)
+            }
+
+            onUpdate(events)
+        }
+    }
 
     
     func getAllEventsCount() async throws -> Int {
