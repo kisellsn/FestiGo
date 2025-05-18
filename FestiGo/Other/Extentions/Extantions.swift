@@ -109,3 +109,11 @@ extension Array {
         }
     }
 }
+
+
+extension String {
+    var isSafeInput: Bool {
+        let regex = try! NSRegularExpression(pattern: "^[\\p{L}0-9 ,.-]{1,100}$", options: [])
+        return regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count)) != nil
+    }
+}

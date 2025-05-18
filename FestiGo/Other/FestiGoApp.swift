@@ -10,22 +10,24 @@ import GoogleSignIn
 
 @main
 struct FestiGoApp: App {
-
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var eventListVM = EventListViewModel()
-
     
-    init(){
-//        FirebaseApp.configure()
-    }
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
+
     var body: some Scene {
         WindowGroup {
             MainView()
+                .preferredColorScheme(
+                    UserDefaults.standard.object(forKey: "isDarkMode") == nil
+                    ? nil 
+                    : (isDarkMode ? .dark : .light)
+                )
                 .environmentObject(eventListVM)
-            
         }
     }
 }
+
 class AppDelegate: NSObject, UIApplicationDelegate{
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool{
         FirebaseApp.configure()

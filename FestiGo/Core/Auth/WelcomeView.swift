@@ -156,7 +156,7 @@ struct WelcomeView: View {
                         
                         NavigationLink(destination: MapView()) {
                             Text("Продовжити як гість")
-                                .opacity(0.7)
+                                .opacity(0.9)
                                 .font(.headline)
                                 .foregroundColor(.ultraViolet)
                                 .frame(maxWidth: .infinity)
@@ -173,7 +173,7 @@ struct WelcomeView: View {
                 .padding(30)
                 .background(
                     RoundedTopBackground()
-                        .fill(Color.white)
+                        .fill(.myWhite)
                         .edgesIgnoringSafeArea(.bottom)
                 )
             }

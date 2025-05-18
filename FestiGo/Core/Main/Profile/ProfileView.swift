@@ -29,23 +29,32 @@ struct ProfileView: View {
                                     ProgressView()
                                 }
                                 .frame(width: 120, height: 120)
+                                .background(Circle().fill(Color.white))
                                 .clipShape(Circle())
-                                .shadow(radius: 5)
+                                .overlay(Circle().stroke(Color.white.opacity(0.8), lineWidth: 4))
+                                .shadow(color: .black.opacity(0.3), radius: 6)
                             } else {
                                 Image(systemName: "person.crop.circle.fill")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 120, height: 120)
                                     .foregroundColor(.gray.opacity(0.4))
+                                    .frame(width: 120, height: 120)
+                                    .background(Circle().fill(Color.white))
+                                    .clipShape(Circle())
+                                    .overlay(Circle().stroke(Color.white.opacity(0.8), lineWidth: 4))
                             }
                             
                             // Імʼя
                             Text("Привіт, \(user.name)")
                                 .font(.title2)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.black)
+                                .foregroundColor(.primary)
                             
                             Divider()
+                                .background(Color.gray.opacity(0.3))
+                                .padding(.horizontal, 30)
+
                             
                             // Інфо
                             VStack(alignment: .leading, spacing: 40) {
@@ -79,7 +88,7 @@ struct ProfileView: View {
                        
                         .background(
                             ZStack(alignment: .bottom) {
-                                Color.white
+                                Color.myWhite
                                     .clipShape(RoundedCorner(radius: 30, corners: [.topLeft, .topRight]))
                                     .shadow(radius: 10)
                                     
@@ -116,7 +125,7 @@ struct ProfileView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Твій профіль")
                         .font(.system(size: 28, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                         .padding(.top, 7)
                     
                 }
@@ -125,16 +134,16 @@ struct ProfileView: View {
                     Button("UA|ENG") {
                         // Language switch
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
 
                     NavigationLink(destination: SettingsView()) {
                         Image(systemName: "gearshape")
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 }
             }
             .toolbarColorScheme(.light, for: .navigationBar)
-            .toolbarBackground(Color.ultraViolet, for: .navigationBar)
+            .toolbarBackground(.primary, for: .navigationBar)
 
         }
         .onAppear {
@@ -146,11 +155,11 @@ struct ProfileView: View {
     func profileRow(title: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
-                .font(.subheadline)
+                .font(.caption)
                 .foregroundColor(.gray)
             Text(value)
                 .font(.body)
-                .foregroundColor(.black)
+                .foregroundColor(.primary)
         }
     }
 

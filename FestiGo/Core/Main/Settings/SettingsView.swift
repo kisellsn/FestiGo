@@ -6,48 +6,92 @@
 //
 
 import SwiftUI
+import FirebaseAuth
+import FirebaseFirestore
 
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
     @StateObject private var locationManager = LocationSearchManager()
     @StateObject private var locationFetcher = LocationFetcher()
-    @State private var colorScheme: ColorScheme? = nil
 
+    @State private var hasSelectedLocation = false
+    @State private var isSelecting = false
+    @State private var showDeleteConfirmation = false
+    @State private var showSavedAlert = false
+
+
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
+    @State private var colorScheme: ColorScheme? = {
+        let isDark = UserDefaults.standard.bool(forKey: "isDarkMode")
+        return UserDefaults.standard.object(forKey: "isDarkMode") != nil ? (isDark ? .dark : .light) : nil
+    }()
 
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                Picker("Режим", selection: $colorScheme) {
-                    Text("Системний").tag(nil as ColorScheme?)
-                    Text("Світлий").tag(ColorScheme.light as ColorScheme?)
-                    Text("Темний").tag(ColorScheme.dark as ColorScheme?)
+                // Тема
+                GroupBox(
+                    label: SettingsLabelView(labelText: "Тема застосунку", labelImage: "sun.max")
+                ){
+                    Picker("Режим", selection: $colorScheme) {
+                        Text("Системна").tag(nil as ColorScheme?)
+                        Text("Світла").tag(ColorScheme.light as ColorScheme?)
+                        Text("Темна").tag(ColorScheme.dark as ColorScheme?)
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding()
+                    .onChange(of: colorScheme) { oldValue, newValue in
+                        if let newValue {
+                            isDarkMode = (newValue == .dark)
+                        } else {
+                            UserDefaults.standard.removeObject(forKey: "isDarkMode")
+                        }
+                    }
                 }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
-                
+
+                // Локація
                 GroupBox(
                     label: SettingsLabelView(labelText: "Локація за замовчуванням", labelImage: "location.circle")
                 ) {
                     LocationInputView(
                         query: $locationManager.query,
+                        hasSelectedLocation: $hasSelectedLocation,
                         results: locationManager.results,
                         status: locationManager.status,
                         onLocationSelect: { selected in
+                            isSelecting = true
                             let full = "\(selected.title), \(selected.subtitle)"
                             locationManager.query = full
+                            viewModel.defaultLocation = full
                             locationManager.results = []
+
+                            Task {
+                                if let coords = try? await locationManager.getCoordinates(for: full) {
+                                    viewModel.locationCoordinates = (coords.latitude, coords.longitude)
+                                }
+                                hasSelectedLocation = true
+                            }
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                isSelecting = false
+                            }
                         },
                         onDetectTap: {
                             locationFetcher.requestLocation { detectedLocation in
                                 locationManager.query = detectedLocation
+                                viewModel.defaultLocation = detectedLocation
+                                hasSelectedLocation = true
                             }
                         },
                         onQueryChange: {
-                            // Optional if needed
+                            if !isSelecting {
+                                hasSelectedLocation = false
+                            }
                         }
                     )
                 }
 
+                // Відстань
                 GroupBox(
                     label: SettingsLabelView(labelText: "Оптимальна відстань (км)", labelImage: "location.north.line")
                 ) {
@@ -56,10 +100,11 @@ struct SettingsView: View {
                         .font(.footnote)
                         .foregroundColor(.secondary)
                     Slider(value: $viewModel.optimalRangeKm, in: 1...100, step: 1)
-                    Text("\(Int(viewModel.optimalRangeKm)) km")
+                    Text("\(Int(viewModel.optimalRangeKm)) км")
                         .bold()
                 }
 
+                // Сповіщення
                 GroupBox(
                     label: SettingsLabelView(labelText: "Сповіщення", labelImage: "bell.badge.fill")
                 ) {
@@ -67,40 +112,52 @@ struct SettingsView: View {
                         .foregroundStyle(.ultraViolet)
                 }
 
-              
-
-                GroupBox {
-                    Button("Зберегти налаштування") {
-                        viewModel.saveSettings()
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.ultraViolet.opacity(0.8))
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+                
+                Button("Зберегти налаштування") {
+                    viewModel.saveSettings()
+                    showSavedAlert = true
                 }
-//                GroupBox {
-//                    Button("Вийти") {
-//                        viewModel.logOut()
-//                    }
-//                    .padding()
-//                    .frame(maxWidth: .infinity)
-//                    .background(Color.burgundy)
-//                    .foregroundColor(.white)
-//                    .cornerRadius(8)
-//                } 
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.ultraViolet.opacity(0.8))
+                .foregroundColor(.white)
+                .cornerRadius(8)
+                .alert("✅ Налаштування збережено", isPresented: $showSavedAlert) {
+                    Button("OK", role: .cancel) {}
+                }
+                
+
+                // Видалити акаунт
+                FullButtonView(
+                    title: "Видалити акаунт",
+                    action: {
+                        showDeleteConfirmation = true
+                    },
+                    backgroundColor: .clear,
+                    isDisabled: false,
+                    isLoading: false,
+                    iconName: "trash",
+                    textColor: .burgundy
+                )
+                .alert("Видалити акаунт?", isPresented: $showDeleteConfirmation) {
+                    Button("Видалити", role: .destructive) {
+                        viewModel.deleteAccount()
+                    }
+                    Button("Скасувати", role: .cancel) { }
+                } message: {
+                    Text("Цю дію не можна скасувати. Ваш профіль і дані буде повністю видалено.")
+                }
             }
             .padding()
             .navigationBarTitle("Налаштування")
             .preferredColorScheme(colorScheme)
-            .onReceive(viewModel.$defaultLocation) { newValue in
-                if !newValue.isEmpty {
-                    locationManager.query = newValue
+            .onAppear {
+                if !viewModel.defaultLocation.isEmpty {
+                    locationManager.query = viewModel.defaultLocation
+                    hasSelectedLocation = true
                 }
             }
         }
-        
-        
     }
 }
 

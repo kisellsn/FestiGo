@@ -13,6 +13,7 @@ class OnboardingViewModel: ObservableObject {
     @Published var currentStep = 0
     @Published var answers: [Int: [String]] = [:]
     @Published var questions: [OnboardingQuestion] = []
+    @Published var selectedLocationCoordinates: (lat: Double, lon: Double)? = nil
 
     init() {
         loadQuestions()
@@ -27,7 +28,7 @@ class OnboardingViewModel: ObservableObject {
             print("Failed to load onboarding questions")
         }
     }
-    
+
     func toggleAnswer(for step: Int, option: String) {
         let inputType = questions[step].inputType
         switch inputType {
@@ -46,33 +47,54 @@ class OnboardingViewModel: ObservableObject {
         }
     }
 
+    func setLocationAnswer(for step: Int, title: String, coordinates: (Double, Double)?) {
+        answers[step] = [title]
+        if step == 3 {
+            selectedLocationCoordinates = coordinates
+        }
+    }
+
     func nextQuestion() {
         if currentStep < questions.count - 1 {
             currentStep += 1
         }
     }
-    
+
     func previousQuestion() {
         if currentStep > 0 {
             currentStep -= 1
         }
     }
+
     func finalAnswers() -> [String: Any] {
         var result: [String: Any] = [:]
+
         for question in questions {
             if let answer = answers[question.id] {
                 result["\(question.id)"] = answer
             }
         }
+
+        // Додати координати для запитання з локацією
+        if let location = answers[3]?.first {
+            var locationDict: [String: Any] = ["title": location]
+            if let coords = selectedLocationCoordinates {
+                locationDict["lat"] = coords.lat
+                locationDict["lon"] = coords.lon
+            }
+            result["3"] = [locationDict]
+        }
+
         return result
     }
+
     func saveCurrentUserAnswers(completion: @escaping (Bool) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
             print("User not logged in.")
             completion(false)
             return
         }
-        
+
         saveAnswers(for: userId, answers: finalAnswers(), completion: completion)
     }
 
@@ -83,7 +105,7 @@ class OnboardingViewModel: ObservableObject {
             "timestamp": Date().timeIntervalSince1970,
             "answers": answers
         ]
-        
+
         db.collection("onboardingResponses")
             .document(userId)
             .setData(responseData) { error in
@@ -101,34 +123,27 @@ class OnboardingViewModel: ObservableObject {
                 }
             }
     }
-    
+
     func isSelected(step: Int, option: String) -> Bool {
         return answers[step]?.contains(option) ?? false
     }
-    
+
     func isCurrentStepValid(with locationManager: LocationSearchManager? = nil) -> Bool {
         let question = questions[currentStep]
-        
+
         switch question.inputType {
         case .multipleChoice, .singleChoice:
             return answers[currentStep]?.isEmpty == false
-
         case .textInput:
             let text = answers[currentStep]?.first ?? ""
             return !text.trimmingCharacters(in: .whitespaces).isEmpty
-
         case .location:
             guard let locationManager = locationManager else { return false }
-            let text = locationManager.query.trimmingCharacters(in: .whitespaces)
-            return !text.isEmpty
-//            && (
-//                locationManager.results.contains(where: { $0.title == text }) ||
-//                answers[currentStep]?.first != nil 
-//            )
+            let query = locationManager.query.trimmingCharacters(in: .whitespaces)
+            let savedAnswer = answers[currentStep]?.first ?? ""
+            return !query.isEmpty && query == savedAnswer && query.isSafeInput
         }
     }
-
-
 }
 
 extension OnboardingViewModel {

@@ -44,7 +44,7 @@ struct FavouritesView: View {
                         Spacer()
                         Text("Ще немає збережених подій")
                             .font(.title3)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.deepGray)
                             .multilineTextAlignment(.center)
                             .padding()
                             .transition(.opacity)
@@ -57,7 +57,9 @@ struct FavouritesView: View {
                                 ForEach(group.events) { event in
                                     NavigationLink(destination: EventDetailView(event: event)) {
                                         EventCardView(event: event)
+                                            
                                     }
+                                    
                                 }
                             }
                         }
@@ -65,6 +67,7 @@ struct FavouritesView: View {
                     .scrollContentBackground(.hidden)
                     .padding(.top, 100)
                     .transition(.opacity)
+                    .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
                 }
             }
             .onAppear {
@@ -77,7 +80,7 @@ struct FavouritesView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Вподобане")
                         .font(.system(size: 28, weight: .bold, design: .rounded))
-                        .foregroundColor(Color.black)
+                        .foregroundColor(.primary)
                         .padding(.top, 7)
                 }
             }

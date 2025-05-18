@@ -10,6 +10,7 @@ import MapKit
 
 class LocationSearchManager: NSObject, ObservableObject {
     static let shared = LocationSearchManager()
+    @Published var hasSelectedLocation: Bool = false
     @Published var query: String = "" {
         didSet {
             handleSearchFragment(query)
@@ -23,9 +24,13 @@ class LocationSearchManager: NSObject, ObservableObject {
 
     init(
         filter: MKPointOfInterestFilter = .excludingAll,
-        region: MKCoordinateRegion = MKCoordinateRegion(.world),
-        types: MKLocalSearchCompleter.ResultType = [.pointOfInterest, .query, .address]
-    ) {
+        region: MKCoordinateRegion = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 49.0, longitude: 31.0), // Центр України
+            span: MKCoordinateSpan(latitudeDelta: 8.0, longitudeDelta: 10.0) // Покриває Україну
+        ),
+        types: MKLocalSearchCompleter.ResultType = [.address]
+    )
+    {
         completer = MKLocalSearchCompleter()
         super.init()
         completer.delegate = self
@@ -36,6 +41,7 @@ class LocationSearchManager: NSObject, ObservableObject {
 
     private func handleSearchFragment(_ fragment: String) {
         status = .searching
+        hasSelectedLocation = false 
         if !fragment.isEmpty {
             completer.queryFragment = fragment
         } else {
@@ -62,11 +68,20 @@ class LocationSearchManager: NSObject, ObservableObject {
 
 extension LocationSearchManager: MKLocalSearchCompleterDelegate{
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        self.results = completer.results.map({ result in
+        // Відфільтруй лише результати, які містять згадку про Україну
+        let filtered = completer.results.filter {
+            let lowerSubtitle = $0.subtitle.lowercased()
+            return lowerSubtitle.contains("ukraine") || lowerSubtitle.contains("україна")
+        }
+
+        // Зберігаємо результати як об'єкти LocationResult
+        self.results = filtered.map { result in
             LocationResult(title: result.title, subtitle: result.subtitle)
-        })
+        }
+
         self.status = .result
     }
+
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
         self.status = .error(error.localizedDescription)
     }

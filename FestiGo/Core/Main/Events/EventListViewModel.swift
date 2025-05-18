@@ -329,10 +329,5 @@ class EventListViewModel: ObservableObject {
             }
         }
     }
-
-
-
-
-    
 }
 

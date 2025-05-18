@@ -45,12 +45,12 @@ struct ChoiceButton: View {
             Text(title)
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(isSelected ? Color.deepGray.opacity(0.7) : Color.white)
-                .foregroundColor(isSelected ? .white : .black)
+                .background(isSelected ? Color.accentColor.opacity(0.8) : .myWhite)
+                .foregroundColor(isSelected ? Color.white : Color.primary)
                 .cornerRadius(50)
                 .overlay(
                     RoundedRectangle(cornerRadius: 50)
-                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                        .stroke(Color.gray.opacity(0.4), lineWidth: 1)
                 )
         }
         .padding(.vertical, 4)
@@ -80,9 +80,9 @@ struct AuthButton: View {
                 .font(.headline)
             Spacer()
         }
-        .foregroundColor(.black)
+        .foregroundColor(.primary)
         .padding()
-        .background(Color.white)
+        .background(Color.myWhite)
         .cornerRadius(10)
         .shadow(radius: 5)
     }
