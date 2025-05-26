@@ -69,38 +69,35 @@ final class UserManager {
         //        decoder.keyDecodingStrategy = .convertFromSnakeCase
         return decoder
     }()
-    
-//    func getUserCityFromOnboardingResponses(userId: String) async throws -> String? {
-//        let snapshot = try await onboardingResponsesDocument(userId: userId).getDocument()
-//        
-//        guard let data = snapshot.data(),
-//          let answers = data["answers"] as? [Any], // або [String] якщо всі елементи у масиві - рядки
-//          answers.count > 4,
-//          let city = answers[3] as? String else {
-//                return nil
-//          }
-//        
-//        return city
-//    }
     func getUserCityAndRadiusFromOnboardingResponses(userId: String) async throws -> (city: String?, radius: Double?) {
         let snapshot = try await onboardingResponsesCollection
             .whereField("userId", isEqualTo: userId)
             .limit(to: 1)
             .getDocuments()
-        
+
         guard let data = snapshot.documents.first?.data(),
-              let answers = data["answers"] as? [String: [String]] else {
+              let answers = data["answers"] as? [String: Any] else {
             print("Failed to parse answers")
             return (nil, nil)
         }
 
-        let city = answers["3"]?.first
-        let radiusString = answers["4"]?.first
-        let radius = Double(radiusString?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "") ?? 50
+        var city: String? = nil
+        if let cityArray = answers["3"] as? [[String: Any]],
+           let firstCity = cityArray.first,
+           let title = firstCity["title"] as? String {
+            city = title
+        }
+
+        var radius: Double? = nil
+        if let radiusArray = answers["4"] as? [String],
+           let radiusString = radiusArray.first {
+            let digitsOnly = radiusString.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+            radius = Double(digitsOnly) ?? 50
+        }
 
         return (city, radius)
     }
-    
+
     func addUserFavouriteEvent(userId: String, eventId: String) async throws {
         let document = userFavouriteEventsCollection(userId: userId).document(eventId)
 
@@ -126,6 +123,25 @@ final class UserManager {
     func getOnboardingResponses(userId: String) async throws  {
         try await onboardingResponsesDocument(userId: userId).getDocument()
     }
+    func isOnboardingCompleted(userId: String) async throws -> Bool {
+        let snapshot = try await userDocument(userId: userId).getDocument()
+
+        guard let data = snapshot.data() else {
+            print("🛑 User document not found for user \(userId)")
+            return false
+        }
+
+        let didComplete = data["didCompleteOnboarding"] as? Bool ?? false
+
+        if didComplete {
+            print("✅ User \(userId) has completed onboarding")
+        } else {
+            print("🚫 User \(userId) has NOT completed onboarding")
+        }
+
+        return didComplete
+    }
+    
 //    func getUser(userId: String) async throws -> DBUser {
 //        let snapshot = try await userDocument(userId: userId).getDocument()
 //

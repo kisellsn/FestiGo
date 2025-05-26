@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
+    @ObservedObject var languageManager = LanguageManager.shared
+
 
     var body: some View {
         NavigationStack {
@@ -132,7 +134,7 @@ struct ProfileView: View {
 
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("UA|ENG") {
-                        // Language switch
+                        languageManager.toggleLanguage()
                     }
                     .foregroundColor(.primary)
 
@@ -141,6 +143,7 @@ struct ProfileView: View {
                     }
                     .foregroundColor(.primary)
                 }
+
             }
             .toolbarColorScheme(.light, for: .navigationBar)
             .toolbarBackground(.primary, for: .navigationBar)
@@ -152,7 +155,7 @@ struct ProfileView: View {
     }
 
     //  для рядків профілю
-    func profileRow(title: String, value: String) -> some View {
+    func profileRow(title: LocalizedStringResource, value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(.caption)

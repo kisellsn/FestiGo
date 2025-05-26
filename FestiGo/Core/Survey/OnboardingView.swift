@@ -62,14 +62,19 @@ struct OnboardingView: View {
 
                 Toggle(isOn: $isChecked) {
                     HStack(spacing: 4) {
+                        Text("Погоджуюсь з")
                         
-                        Text("Погоджуюсь з Terms & Privacy Policy")
+                        Link("Terms & Privacy Policy",
+                             destination: URL(string: "https://kisellsn.github.io/festigo-terms/")!)
+                            .foregroundColor(.blue)
+                            .underline()
                     }
                     .font(.footnote)
                     .foregroundColor(Color.secondary.opacity(0.7))
                 }
                 .toggleStyle(CheckboxToggleStyle())
                 .padding(.horizontal)
+
 
                 Button("Продовжити") {
                     hasAgreedToTerms = true
@@ -103,7 +108,7 @@ struct OnboardingView: View {
                         .padding(.horizontal)
 
                     VStack(spacing: 12) {
-                        Text(viewModel.questions[viewModel.currentStep].question)
+                        Text(LocalizedStringResource(stringLiteral: viewModel.questions[viewModel.currentStep].question))
                             .font(.title2)
                             .bold()
                             .foregroundColor(.white)
@@ -206,7 +211,7 @@ struct OnboardingView: View {
             let question = viewModel.questions[viewModel.currentStep]
 
             if let options = question.options {
-                ForEach(options, id: \.self) { option in
+                ForEach(options, id: \.self) { option  in
                     ChoiceButton(
                         title: option,
                         isSelected: viewModel.answers[viewModel.currentStep]?.contains(option) ?? false,

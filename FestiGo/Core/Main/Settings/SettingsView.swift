@@ -31,7 +31,7 @@ struct SettingsView: View {
             VStack(spacing: 20) {
                 // Тема
                 GroupBox(
-                    label: SettingsLabelView(labelText: "Тема застосунку", labelImage: "sun.max")
+                    label: SettingsLabelView(labelText:"Тема застосунку", labelImage: "sun.max")
                 ){
                     Picker("Режим", selection: $colorScheme) {
                         Text("Системна").tag(nil as ColorScheme?)
@@ -51,7 +51,7 @@ struct SettingsView: View {
 
                 // Локація
                 GroupBox(
-                    label: SettingsLabelView(labelText: "Локація за замовчуванням", labelImage: "location.circle")
+                    label: SettingsLabelView(labelText:"Локація за замовчуванням", labelImage: "location.circle")
                 ) {
                     LocationInputView(
                         query: $locationManager.query,
@@ -93,7 +93,7 @@ struct SettingsView: View {
 
                 // Відстань
                 GroupBox(
-                    label: SettingsLabelView(labelText: "Оптимальна відстань (км)", labelImage: "location.north.line")
+                    label: SettingsLabelView(labelText: LocalizedStringResource("Оптимальна відстань (км)"), labelImage: "location.north.line")
                 ) {
                     Divider().padding(.vertical, 4)
                     Text("Максимальна бажана відстань події від вас")
@@ -152,15 +152,33 @@ struct SettingsView: View {
             .navigationBarTitle("Налаштування")
             .preferredColorScheme(colorScheme)
             .onAppear {
-                if !viewModel.defaultLocation.isEmpty {
-                    locationManager.query = viewModel.defaultLocation
-                    hasSelectedLocation = true
+//                if !viewModel.defaultLocation.isEmpty {
+//                    locationManager.query = viewModel.defaultLocation
+//                    hasSelectedLocation = true
+                if locationManager.query.isEmpty {
+                    print(viewModel.defaultLocation)
+                        locationManager.query = viewModel.defaultLocation
+                        hasSelectedLocation = true
+                    
                 }
             }
+            .onChange(of: viewModel.defaultLocation) { _, newValue in
+                if locationManager.query.isEmpty, !newValue.isEmpty {
+                    locationManager.query = newValue
+                    hasSelectedLocation = true
+                    isSelecting = true
+                }
+            }
+
         }
     }
 }
 
 #Preview{
     SettingsView()
+}
+
+#Preview("ua"){
+    SettingsView()
+        .environment(\.locale, Locale(identifier: "uk"))
 }

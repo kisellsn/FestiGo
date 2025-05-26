@@ -19,6 +19,8 @@ struct Event: Identifiable, Codable, Equatable, Hashable {
     let id: String
     let name: String
     let description: String?
+    let nameUK: String?
+    let descriptionUK: String?
     let link: String?
     let imageUrl: String?
     
@@ -33,12 +35,15 @@ struct Event: Identifiable, Codable, Equatable, Hashable {
     let city: String
     let country: String
     
+    let cityUK: String?    
     let price: String?
     
     enum CodingKeys: String, CodingKey {
         case id
         case name
         case description
+        case nameUK = "name_uk"
+        case descriptionUK = "description_uk"
         case link
         case imageUrl = "imageUrl"
         case startTime = "startTime"
@@ -48,6 +53,7 @@ struct Event: Identifiable, Codable, Equatable, Hashable {
         case categories = "main_categories"
         case city
         case country
+        case cityUK = "city_uk"
         case price
     }
 }
@@ -57,13 +63,51 @@ extension Event {
         return CLLocationCoordinate2D(latitude: venue.latitude, longitude: venue.longitude)
     }
 }
+extension Event {
+    var localizedName: String {
+        if LanguageManager.shared.selectedLanguage == "uk",
+           let nameUK = nameUK, !nameUK.isEmpty {
+            return nameUK
+        }
+        return name
+    }
+
+    var localizedDescription: String? {
+        if LanguageManager.shared.selectedLanguage == "uk",
+           let descriptionUK = descriptionUK, !descriptionUK.isEmpty {
+            return descriptionUK
+        }
+        return description
+    }
+
+    var localizedCity: String {
+        if LanguageManager.shared.selectedLanguage == "uk",
+           let cityUK = cityUK, !cityUK.isEmpty {
+            return cityUK
+        }
+        return city
+    }
+}
+
 
 struct Venue: Codable, Hashable {
     let name: String
     let address: String
+    let nameUK: String?
+    let addressUK: String?
     let latitude: Double
     let longitude: Double
     let subtypes: [String]
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case nameUK = "name_uk"
+        case address
+        case addressUK = "address_uk"
+        case latitude
+        case longitude
+        case subtypes
+    }
     
     var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -71,35 +115,20 @@ struct Venue: Codable, Hashable {
 
 }
 
-
-
-
-
-struct RawEvent: Decodable {
-    let event_id: String
-    let name: String
-    let description: String?
-    let link: String?
-    let start_time: String
-    let end_time: String?
-    let is_virtual: Bool
-    let thumbnail: String?
-    let ticket_links: [TicketLink]?
-    let venue: RawVenue?
-    let city: String?
-    let country: String?
-    let subtypes: [String]?
-    
-    struct TicketLink: Decodable {
-        let link: String
+extension Venue {
+    var localizedName: String {
+        if LanguageManager.shared.selectedLanguage == "uk",
+           let nameUK = nameUK, !nameUK.isEmpty {
+            return nameUK
+        }
+        return name
     }
-    
-    struct RawVenue: Decodable {
-        let name: String
-        let full_address: String
-        let latitude: Double
-        let longitude: Double
+
+    var localizedAddress: String {
+        if LanguageManager.shared.selectedLanguage == "uk",
+           let addressUK = addressUK, !addressUK.isEmpty {
+            return addressUK
+        }
+        return address
     }
 }
-
-

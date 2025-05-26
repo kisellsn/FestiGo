@@ -123,7 +123,7 @@ struct EventListView: View {
         .onAppear {
             if !didAppear{
                 eventViewModel.getEvents()
-                eventViewModel.fetchRecommendations()
+                eventViewModel.loadRecommendationsIfNeeded()
                 eventViewModel.addRealtimeEventsListener()
                 didAppear = true
             }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsLabelView: View {
-    var labelText: String
+    var labelText: LocalizedStringResource
     var labelImage: String
     
     var body: some View {

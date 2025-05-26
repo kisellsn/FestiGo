@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FullButtonView: View {
-    let title: String
+    let title: LocalizedStringResource
     let action: () -> Void
     let backgroundColor: Color
     let isDisabled: Bool

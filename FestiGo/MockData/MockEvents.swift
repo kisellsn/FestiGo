@@ -11,49 +11,57 @@ import Foundation
 
 struct MockEvents {
     static let sampleEvents: [Event] = [
-            Event(
-                id: "1",
-                name: "CupcakKe Live",
-                description: "DJ Dials & 1015 Folsom Present: CupcakKe live concert in San Francisco.",
-                link: "https://www.eventbrite.com/e/cupcakke-tickets-900711340867",
-                imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAJaz55sNq0XqDESEFPPSh07-bUZ_NxE3pkY3cOc9eBeDzgtVIdMK6CUpRqA&s=10",
-                startTime: Date().addingTimeInterval(86400), // +1 day
-                endTime: Date().addingTimeInterval(90000),   // +1 day + 1 hour
-                isVirtual: false,
-                venue: Venue(
-                    name: "1015 Folsom",
-                    address: "1015 Folsom Street, San Francisco, CA 94103",
-                    latitude: 37.77811,
-                    longitude: -122.4058,
-                    subtypes: ["pub"]
-                ),
-                categories: ["music", "concert"],
-                city: "San Francisco",
-                country: "US",
-                price: "$25"
+        Event(
+            id: "123456",
+            name: "CupcakKe Live at 1015 Folsom",
+            description: "FRIDAY JUNE 14 2024 - DJ Dials & 1015 Folsom Present: cupcakKe",
+            nameUK: "lalala",
+            descriptionUK: "descriptionUK lalala",
+            link: "https://www.eventbrite.com/e/cupcakke-tickets-900711340867",
+            imageUrl: "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F762008039%2F121998919041%2F1%2Foriginal.20240507-212848?w=1000&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C198%2C1920%2C960&s=182c6aab47493c1b87d41a43cff0597d",
+            startTime: ISO8601DateFormatter().date(from: "2024-06-15T05:00:00Z")!,
+            endTime: ISO8601DateFormatter().date(from: "2024-06-15T06:30:00Z"),
+            isVirtual: false,
+            venue: Venue(
+                name: "1015 Folsom",
+                address: "1015 Folsom Street, San Francisco, CA 94103, United States",
+                nameUK:"nameUK",
+                addressUK:"addressUK",
+                latitude: 37.77811,
+                longitude: -122.4058, subtypes: ["bar"]
             ),
+            categories: ["music", "nightlife", "live_music_venue"],
+            city: "San Francisco",
+            country: "US",
+            cityUK: "cityUK llalalal",
+            price: "--"
+        ),
             //TODO: not all imgs r loading
-            Event(
-                id: "2",
-                name: "Art & Wine Festival",
-                description: "Enjoy local artists, crafts, and wine tastings.",
-                link: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqVyX29eDfi2vfxDJelnaedAWI-xtlWow8S0mNGcAHoA&s=10",
-                imageUrl: nil,
-                startTime: Date().addingTimeInterval(172800),
-                endTime: Date().addingTimeInterval(280000),
-                isVirtual: false,
-                venue: Venue(
-                    name: "Downtown Plaza",
-                    address: "123 Main St, Napa, CA",
-                    latitude: 38.2975,
-                    longitude: -122.2869,
-                    subtypes: ["pub"]
-                ),
-                categories: ["festival", "art", "food"],
-                city: "Napa",
-                country: "US",
-                price: "Free"
-            )
+        Event(
+            id: "123456",
+            name: "CupcakKe Live at 1015 Folsom",
+            description: "FRIDAY JUNE 14 2024 - DJ Dials & 1015 Folsom Present: cupcakKe",
+            nameUK: "lalala",
+            descriptionUK: "descriptionUK lalala",
+            link: "https://www.eventbrite.com/e/cupcakke-tickets-900711340867",
+            imageUrl: nil,
+            startTime: ISO8601DateFormatter().date(from: "2024-06-15T05:00:00Z")!,
+            endTime: ISO8601DateFormatter().date(from: "2024-06-15T06:30:00Z"),
+            isVirtual: false,
+            venue: Venue(
+                name: "1015 Folsom",
+                address: "1015 Folsom Street, San Francisco, CA 94103, United States",
+                nameUK:"nameUK",
+                addressUK:"addressUK",
+                latitude: 37.77811,
+                longitude: -122.4058, subtypes: ["bar"]
+            ),
+            categories: ["music", "nightlife", "live_music_venue"],
+            city: "San Francisco",
+            country: "US",
+            cityUK: "cityUK llalalal",
+            price: "--"
+        )
         ]
     static func loadEvents() -> [Event] {
             guard let fileURL = Bundle.main.url(forResource: "mockEvents", withExtension: "json") else {
@@ -109,6 +117,8 @@ struct MockEvents {
                 Venue(
                     name: $0.name,
                     address: $0.full_address,
+                    nameUK:"nameUK",
+                    addressUK:"addressUK",
                     latitude: $0.latitude,
                     longitude: $0.longitude,
                     subtypes: $0.subtypes
@@ -119,6 +129,8 @@ struct MockEvents {
                 id: apiEvent.event_id,
                 name: apiEvent.name,
                 description: apiEvent.description,
+                nameUK: "lalala",
+                descriptionUK: "descriptionUK lalala",
                 link: apiEvent.link,
                 imageUrl: apiEvent.thumbnail,
                 startTime: DateFormatter.eventAPIDateFormatter.date(from: apiEvent.start_time) ?? Date(),
@@ -128,6 +140,7 @@ struct MockEvents {
                 categories: apiEvent.tags ?? venue?.subtypes ?? [],
                 city: apiEvent.venue?.city ?? "",
                 country: apiEvent.venue?.country ?? "",
+                cityUK: "cityUK llalalal",
                 price: apiEvent.price
             )
         }

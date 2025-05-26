@@ -42,7 +42,7 @@ struct ChoiceButton: View {
 
     var body: some View {
         Button(action: action) {
-            Text(title)
+            Text(LocalizedStringResource(stringLiteral: title))
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(isSelected ? Color.accentColor.opacity(0.8) : .myWhite)
@@ -59,7 +59,7 @@ struct ChoiceButton: View {
 
 
 struct AuthButton: View {
-    var label: String
+    var label: LocalizedStringResource
     var icon: String? = nil
     var imageName: String? = nil
 

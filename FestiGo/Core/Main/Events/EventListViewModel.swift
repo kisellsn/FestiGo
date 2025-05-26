@@ -16,6 +16,7 @@ import Combine
 class EventListViewModel: ObservableObject {
     @Published private(set) var events: [Event] = []
     private var lastDocument: DocumentSnapshot? = nil
+    @Published private(set) var didLoadRecommendations = false
 
     @Published var selectedCategories: [String]? = nil
     @Published var isOnline: TypeOption? = nil         // nil = all, true = only online, false = only offline
@@ -36,22 +37,43 @@ class EventListViewModel: ObservableObject {
     
     private var firestoreListener: ListenerRegistration? = nil
     private var cancellables = Set<AnyCancellable>()
-    private func setupBindings() {
-        $events
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.fetchRecommendations()
-            }
-            .store(in: &cancellables)
-    }
+//    private func setupBindings() {
+//        $events
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] _ in
+//                self?.fetchRecommendations()
+//            }
+//            .store(in: &cancellables)
+//    }
 
     init() {
         fetchAllCities()
-        setupBindings()
+//        setupBindings()
         Task {
             await applyUserDefaultCity()
         }
     }
+    func loadRecommendationsIfNeeded() {
+        guard let user = Auth.auth().currentUser else {
+            print("🔒 Користувач не авторизований — рекомендації не потрібні")
+            return
+        }
+
+        Task {
+            do {
+                let isOnboardingCompleted = try await UserManager.shared.isOnboardingCompleted(userId: user.uid)
+
+                guard isOnboardingCompleted else {
+                    print("📝 Користувач ще не пройшов опитування — рекомендації не потрібні")
+                    return
+                }
+                self.fetchRecommendations()
+            } catch {
+                print("❌ Помилка при перевірці опитування: \(error)")
+            }
+        }
+    }
+
     deinit {
         firestoreListener?.remove()
     }
@@ -76,7 +98,7 @@ class EventListViewModel: ObservableObject {
         case education
         case sport
         
-        var label: String {
+        var label: LocalizedStringResource {
             switch self {
                 case .all: return "Все"
                 case .music: return "🎶Музика"
@@ -170,6 +192,7 @@ class EventListViewModel: ObservableObject {
             }
         }
     }
+    // TODO: city if in ukr
     
     func citySelected(option: CityOption) async throws {
         self.selectedCity = option
@@ -250,7 +273,6 @@ class EventListViewModel: ObservableObject {
     }
     
     func addRealtimeEventsListener() {
-        // Зупини попередній, якщо існує
         firestoreListener?.remove()
 
         firestoreListener = EventsManager.shared.addEventsListener(
@@ -298,22 +320,22 @@ class EventListViewModel: ObservableObject {
         
     }
     
-    func getUserRecommendations() {
-      
-    }
     func fetchRecommendations() {
+        guard !didLoadRecommendations else { return }
+
         UserProfileService.shared.getRecommendations { [weak self] ids in
             DispatchQueue.main.async {
                 self?.recommendedEventIds = ids
                 self?.fetchRecommendedEvents()
-                
+                self?.didLoadRecommendations = true
+
                 UserProfileService.shared.updateProfile { success in
-                   if success {
-                       print("✅ Профіль успішно оновлено після отримання рекомендацій")
-                   } else {
-                       print("❌ Не вдалося оновити профіль після отримання рекомендацій")
-                   }
-               }
+                    if success {
+                        print("✅ Профіль оновлено після рекомендацій")
+                    } else {
+                        print("❌ Update profile не вдалося")
+                    }
+                }
             }
         }
     }

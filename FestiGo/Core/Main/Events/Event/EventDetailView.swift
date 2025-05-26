@@ -78,13 +78,14 @@ struct EventDetailView: View {
                 .padding(.top, 15)
             
                 
-                
-                Text(event.name)
+                Text(event.localizedName)
                     .font(.title)
                     .bold()
-                    
+                
                 // 3. Description
-                if let description = event.description {
+                if let description = event.localizedDescription {
+                    Text("Про подію")
+                        .font(.headline)
                     Text(description)
                         .foregroundColor(.secondary)
                 }
@@ -98,10 +99,10 @@ struct EventDetailView: View {
                             .font(.headline)
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(venue.name)
+                            Text(venue.localizedName)
                                 .font(.subheadline)
                                 .bold()
-                            Text(venue.address)
+                            Text(venue.localizedAddress)
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                         }
@@ -112,7 +113,7 @@ struct EventDetailView: View {
                                 viewModel.openMapAt(
                                     latitude: venue.latitude,
                                     longitude: venue.longitude,
-                                    name: venue.name,
+                                    name: venue.localizedName,
                                     openURL: openURL
                                 )
                             }
@@ -159,4 +160,5 @@ struct EventDetailView: View {
     NavigationStack {
         EventDetailView(event: MockEvents.sampleEvents[0])
     }
+    .environment(\.locale, Locale(identifier: "uk"))
 }

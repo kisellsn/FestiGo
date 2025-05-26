@@ -36,26 +36,29 @@ class SettingsViewModel: ObservableObject {
 
             DispatchQueue.main.async {
                 if let locationAnswer = answers["3"] as? [[String: Any]],
-                   let locationDict = locationAnswer.first,
-                   let title = locationDict["title"] as? String,
-                   self.defaultLocation.isEmpty {
-                    self.defaultLocation = title
-                    if let lat = locationDict["lat"] as? Double, let lon = locationDict["lon"] as? Double {
+                   let locationDict = locationAnswer.first {
+                    if let title = locationDict["title"] as? String, self.defaultLocation.isEmpty {
+                        self.defaultLocation = title
+                    }
+                    if let lat = locationDict["lat"] as? Double,
+                       let lon = locationDict["lon"] as? Double {
                         self.locationCoordinates = (lat, lon)
                     }
                 }
 
                 if let rangeAnswer = answers["4"] as? [String],
-                   let rangeStr = rangeAnswer.first,
-                   let extractedNumber = Double(rangeStr.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()),
-                   self.optimalRangeKm == 50 {
-                    self.optimalRangeKm = extractedNumber
+                   let rangeStr = rangeAnswer.first {
+                    let numberString = rangeStr.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+                    if let extractedNumber = Double(numberString), self.optimalRangeKm == 50 {
+                        self.optimalRangeKm = extractedNumber
+                    }
                 }
 
                 self.hasLoadedFromFirestore = true
             }
         }
     }
+
 
 
     func saveSettings() {

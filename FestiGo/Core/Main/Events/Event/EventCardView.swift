@@ -34,12 +34,12 @@ struct EventCardView: View {
 //                }
             }
             VStack(alignment: .leading, spacing: 8) {
-                Text(event.name)
+                Text(event.localizedName)
                     .font(.headline)
                     .lineLimit(1)
 
                 if let venue = event.venue {
-                    Text("\(venue.name), \(event.city)")
+                    Text("\(venue.localizedName), \(event.localizedCity)")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -67,6 +67,8 @@ struct EventCardView: View {
         id: "123456",
         name: "CupcakKe Live at 1015 Folsom",
         description: "FRIDAY JUNE 14 2024 - DJ Dials & 1015 Folsom Present: cupcakKe",
+        nameUK: "lalala",
+        descriptionUK: "descriptionUK lalala",
         link: "https://www.eventbrite.com/e/cupcakke-tickets-900711340867",
         imageUrl: "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F762008039%2F121998919041%2F1%2Foriginal.20240507-212848?w=1000&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C198%2C1920%2C960&s=182c6aab47493c1b87d41a43cff0597d",
         startTime: ISO8601DateFormatter().date(from: "2024-06-15T05:00:00Z")!,
@@ -75,11 +77,15 @@ struct EventCardView: View {
         venue: Venue(
             name: "1015 Folsom",
             address: "1015 Folsom Street, San Francisco, CA 94103, United States",
+            nameUK:"nameUK",
+            addressUK:"addressUK",
             latitude: 37.77811,
             longitude: -122.4058, subtypes: ["bar"]
         ),
         categories: ["music", "nightlife", "live_music_venue"],
         city: "San Francisco",
-        country: "US", price: "--"
+        country: "US", 
+        cityUK: "cityUK llalalal",
+        price: "--"
     ))
 }

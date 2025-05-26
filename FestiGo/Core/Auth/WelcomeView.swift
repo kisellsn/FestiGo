@@ -38,7 +38,7 @@ struct WelcomeView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 150, height: 150)
-                .shadow(color: Color.white.opacity(0.7), radius: 12, x: 0, y: 0)
+                .shadow(color: Color.white.opacity(0.1), radius: 12, x: 0, y: 0)
                 .scaleEffect(isAnimating ? 1.05 : 1)
                 .opacity(isAnimating ? 1 : 0)
                 .animation(

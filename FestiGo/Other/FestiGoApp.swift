@@ -14,6 +14,10 @@ struct FestiGoApp: App {
     @StateObject var eventListVM = EventListViewModel()
     
     @AppStorage("isDarkMode") private var isDarkMode: Bool = false
+    
+    init() {
+        Bundle.setLanguage(LanguageManager.shared.selectedLanguage)
+    }
 
     var body: some Scene {
         WindowGroup {

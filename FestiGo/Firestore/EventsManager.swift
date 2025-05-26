@@ -44,7 +44,7 @@ final class EventsManager {
         for document in snapshot.documents {
             do {
                 let event = try document.data(as: Event.self)
-                let city = event.city.trimmingCharacters(in: .whitespacesAndNewlines)
+                let city = event.localizedCity.trimmingCharacters(in: .whitespacesAndNewlines)
                 guard !city.isEmpty else { continue }
 
                 if cityCoordinates[city] == nil {
@@ -95,9 +95,13 @@ final class EventsManager {
             query = query.whereField(Event.CodingKeys.categories.rawValue, arrayContainsAny: selectedCategories)
         }
         
+//        if let city {
+//            query = query.whereField(Event.CodingKeys.city.rawValue, isEqualTo: city)
+//        }
         if let city {
-            query = query.whereField(Event.CodingKeys.city.rawValue, isEqualTo: city)
+            query = query.whereField(LanguageManager.currentCityFieldName, isEqualTo: city)
         }
+
         
         if let isOnline {
             query = query.whereField(Event.CodingKeys.isVirtual.rawValue, isEqualTo: isOnline)
@@ -135,9 +139,13 @@ final class EventsManager {
             query = query.whereField("category", in: categories)
         }
 
-        if let city = city {
-            query = query.whereField("city", isEqualTo: city)
+//        if let city = city {
+//            query = query.whereField("city", isEqualTo: city)
+//        }
+        if let city {
+            query = query.whereField(LanguageManager.currentCityFieldName, isEqualTo: city)
         }
+
 
         if let isOnline = isOnline {
             query = query.whereField("isOnline", isEqualTo: isOnline)
