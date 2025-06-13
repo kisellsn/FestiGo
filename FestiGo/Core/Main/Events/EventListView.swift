@@ -10,7 +10,7 @@ import SwiftUI
 struct EventListView: View {
     @EnvironmentObject var eventViewModel: EventListViewModel
     @State private var didAppear = false
-    
+    @State private var showInfo = false
 
     var body: some View {
         NavigationStack {
@@ -27,6 +27,27 @@ struct EventListView: View {
                             .padding(.horizontal)
                         horisontalListView
                         
+                        Divider()
+                    }
+                    
+                    
+                    if !eventViewModel.similarEvents.isEmpty
+                        {
+                        HStack {
+                            Text("Схожі на \(eventViewModel.lastLikedEvent?.localizedName ?? "")")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                            Spacer()
+                            Menu {
+                                Text("Ці події подібні до тієї, яку ти нещодавно вподобав")
+                                        .font(.body)
+                                } label: {
+                                    Image(systemName: "questionmark.circle")
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                            .padding(.horizontal)
+                        similarListView
                         Divider()
                     }
 
@@ -48,8 +69,20 @@ struct EventListView: View {
             }
             .navigationTitle("Головна")
             .navigationBarHidden(true)
-            
+            .onAppear {
+                if !didAppear{
+                    eventViewModel.getEvents()
+                    eventViewModel.loadRecommendationsIfNeeded()
+                    eventViewModel.loadSimilarIfNeeded()
+                    eventViewModel.addRealtimeEventsListener()
+                    didAppear = true
+                }
+            }
+            .clipped()
+
         }
+        
+        
     }
     
     @ViewBuilder
@@ -59,6 +92,23 @@ struct EventListView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     ForEach(eventViewModel.recommendedEvents) { event in
+                        NavigationLink(destination: EventDetailView(event: event)) {
+                            VerticalEventCardView(event: event)
+                                .frame(width: 200, height: 200)
+                        }
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+    }
+    @ViewBuilder
+    var similarListView: some View{
+        VStack(alignment: .leading, spacing: 12){
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 16) {
+                    ForEach(eventViewModel.similarEvents) { event in
                         NavigationLink(destination: EventDetailView(event: event)) {
                             VerticalEventCardView(event: event)
                                 .frame(width: 200, height: 200)
@@ -120,14 +170,7 @@ struct EventListView: View {
             }
         }
         .padding(.top)
-        .onAppear {
-            if !didAppear{
-                eventViewModel.getEvents()
-                eventViewModel.loadRecommendationsIfNeeded()
-                eventViewModel.addRealtimeEventsListener()
-                didAppear = true
-            }
-        }
+        
         
     }
     

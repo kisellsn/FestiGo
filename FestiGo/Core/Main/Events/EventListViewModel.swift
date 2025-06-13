@@ -73,6 +73,53 @@ class EventListViewModel: ObservableObject {
             }
         }
     }
+    @Published var similarEvents: [Event] = []
+    @Published var lastLikedEvent: Event? = nil
+    func loadSimilarIfNeeded() {
+        guard let user = Auth.auth().currentUser else {
+            print("🔒 Користувач не авторизований — подібні події не потрібні")
+            return
+        }
+
+        Task {
+            do {
+                let hasFavourites = try await UserManager.shared.areFavouritesExist(userId: user.uid)
+
+                guard hasFavourites else {
+                    print("📝 Користувач ще не лайкнув жодної події — подібні не потрібні")
+                    return
+                }
+                self.fetchSimilarEvents()
+            } catch {
+                print("❌ Помилка при перевірці опитування: \(error)")
+            }
+        }
+    }
+    func fetchSimilarEvents() {
+        UserProfileService.shared.getSimilarEvents { events, lastEventId in
+            DispatchQueue.main.async {
+                self.similarEvents = events
+
+                guard let lastEventId else {
+                    self.lastLikedEvent = nil
+                    return
+                }
+
+                Task {
+                    do {
+                        let event = try await EventsManager.shared.getEvent(eventId: lastEventId)
+                        DispatchQueue.main.async {
+                            self.lastLikedEvent = event
+                        }
+                    } catch {
+                        print("❌ Failed to fetch last liked event:", error)
+                    }
+                }
+            }
+        }
+    }
+
+
 
     deinit {
         firestoreListener?.remove()
@@ -329,13 +376,13 @@ class EventListViewModel: ObservableObject {
                 self?.fetchRecommendedEvents()
                 self?.didLoadRecommendations = true
 
-                UserProfileService.shared.updateProfile { success in
-                    if success {
-                        print("✅ Профіль оновлено після рекомендацій")
-                    } else {
-                        print("❌ Update profile не вдалося")
-                    }
-                }
+//                UserProfileService.shared.updateProfile { success in
+//                    if success {
+//                        print("✅ Профіль оновлено після рекомендацій")
+//                    } else {
+//                        print("❌ Update profile не вдалося")
+//                    }
+//                }
             }
         }
     }

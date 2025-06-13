@@ -132,37 +132,20 @@ struct EventFiltersView: View {
     @ViewBuilder
     var categoryFilterView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            LazyHGrid(rows: gridLayout, spacing: 12) {
-                
-                // Кнопка "Усі"
-                Button(action: {
-                    Task {
-                        try? await viewModel.categorySelected(option: .all)
-                    }
-                }) {
-                    Text("Усі")
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(viewModel.selectedCategories == nil ? Color.lighterViolet : Color.gray.opacity(0.2))
-                        .foregroundColor(viewModel.selectedCategories == nil ? .white : .primary)
-                        .cornerRadius(20)
-                }
-
-                // Категорії
-                ForEach(EventListViewModel.CategoryOption.allCases.filter { $0 != .all }, id: \.self) { category in
-                    let isSelected = viewModel.selectedCategories?.contains(category.rawValue) ?? false
-
-                    Button(action: {
-                        Task {
-                            try? await viewModel.categorySelected(option: category)
+            HStack(alignment: .top, spacing: 12) {
+                VStack(alignment: .leading, spacing: 15) {
+                    HStack(spacing: 15) {
+                        // Перший ряд категорій
+                        categoryButton(text: "Усі", selected: viewModel.selectedCategories == nil) {
+                            Task { try? await viewModel.categorySelected(option: .all) }
                         }
-                    }) {
-                        Text(category.label)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(isSelected ? Color.lighterViolet : Color.gray.opacity(0.2))
-                            .foregroundColor(isSelected ? .white : .primary)
-                            .cornerRadius(20)
+
+                        categoryRow(from: Array(EventListViewModel.CategoryOption.allCases.filter { $0 != .all }.prefix(3)))
+                    }
+
+                    HStack(spacing: 15) {
+                        // Другий ряд категорій
+                        categoryRow(from: Array(EventListViewModel.CategoryOption.allCases.filter { $0 != .all }.suffix(from: 3)))
                     }
                 }
             }
@@ -170,6 +153,29 @@ struct EventFiltersView: View {
             .frame(height: 90)
         }
     }
+    @ViewBuilder
+    func categoryRow(from categories: [EventListViewModel.CategoryOption]) -> some View {
+        ForEach(categories, id: \.self) { category in
+            let isSelected = viewModel.selectedCategories?.contains(category.rawValue) ?? false
+            categoryButton(text: category.label, selected: isSelected) {
+                Task { try? await viewModel.categorySelected(option: category) }
+            }
+        }
+    }
+
+    @ViewBuilder
+    func categoryButton(text: LocalizedStringResource, selected: Bool, action: @escaping () -> Void) -> some View
+ {
+        Button(action: action) {
+            Text(text)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(selected ? Color.lighterViolet : Color.gray.opacity(0.2))
+                .foregroundColor(selected ? .white : .primary)
+                .cornerRadius(20)
+        }
+    }
+
 
 }
 #Preview {

@@ -378,6 +378,22 @@
         }
       }
     },
+    "Виставки" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exhibitions"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виставки"
+          }
+        }
+      }
+    },
     "Вітаємо у FestiGo!" : {
       "localizations" : {
         "en" : {
@@ -682,6 +698,22 @@
         }
       }
     },
+    "Кіно" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cinema"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кіно"
+          }
+        }
+      }
+    },
     "Крок %lld з %lld" : {
       "localizations" : {
         "en" : {
@@ -758,6 +790,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ми задамо кілька питань, щоб персоналізувати ваш досвід користування FestiGo."
+          }
+        }
+      }
+    },
+    "Музика" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Music"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Музика"
           }
         }
       }
@@ -886,6 +934,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Оптимальна відстань (км)"
+          }
+        }
+      }
+    },
+    "Освіта" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Education"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Освіта"
           }
         }
       }
@@ -1178,6 +1242,22 @@
         }
       }
     },
+    "Спорт" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sport"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спорт"
+          }
+        }
+      }
+    },
     "Спробуй змінити фільтри або перевір підключення до мережі." : {
       "localizations" : {
         "en" : {
@@ -1226,6 +1306,22 @@
         }
       }
     },
+    "Схожі на %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar to %@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Схожі на %@"
+          }
+        }
+      }
+    },
     "Твій профіль" : {
       "localizations" : {
         "en" : {
@@ -1238,6 +1334,70 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Твій профіль"
+          }
+        }
+      }
+    },
+    "Твій шлях — це постійне пізнання й розвиток " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your path is one of constant learning and development."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Твій шлях — це постійне пізнання й розвиток "
+          }
+        }
+      }
+    },
+    "Твоя енергія та рух — це стиль життя " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your energy and movement are a lifestyle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Твоя енергія та рух — це стиль життя "
+          }
+        }
+      }
+    },
+    "Театр" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Theater"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Театр"
+          }
+        }
+      }
+    },
+    "Тебе надихає атмосфера великих подій і спільноти " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are inspired by the atmosphere of great events and community."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тебе надихає атмосфера великих подій і спільноти "
           }
         }
       }
@@ -1270,6 +1430,70 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Темна"
+          }
+        }
+      }
+    },
+    "Ти знаходиш натхнення в мистецтві й деталях " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You find inspiration in art and details."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ти знаходиш натхнення в мистецтві й деталях "
+          }
+        }
+      }
+    },
+    "Ти любиш історії, що залишають слід у душі " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You love stories that leave a mark on your soul."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ти любиш історії, що залишають слід у душі "
+          }
+        }
+      }
+    },
+    "Ти цінуєш глибокі історії й живі емоції сцени " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You appreciate deep stories and vivid emotions on stage."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ти цінуєш глибокі історії й живі емоції сцени "
+          }
+        }
+      }
+    },
+    "У твоєму серці завжди звучить музика " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There is always music in your heart."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У твоєму серці завжди звучить музика "
           }
         }
       }
@@ -1370,6 +1594,25 @@
         }
       }
     },
+    "Фестивалі" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Festivals"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Фестивалі"
+          }
+        }
+      }
+    },
+    "Ці події подібні до тієї, яку ти нещодавно вподобав" : {
+
+    },
     "Цю дію не можна скасувати. Ваш профіль і дані буде повністю видалено." : {
       "localizations" : {
         "en" : {
@@ -1414,6 +1657,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ще немає збережених подій"
+          }
+        }
+      }
+    },
+    "Що про тебе каже апка" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What does the app say about you?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Що про тебе каже апка"
           }
         }
       }

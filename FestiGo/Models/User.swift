@@ -24,6 +24,7 @@ struct User: Codable{
     let didCompleteOnboarding: Bool
     
     let premium: Bool
+    let mainCategoryVector: [Double]?
     
     init(
         id: String,
@@ -37,7 +38,9 @@ struct User: Codable{
         preferences: [String]? = nil,
 //        favoriteEvents: [Event]? = nil,
         profileImagePath: String? = nil,
-        profileImagePathUrl: String? = nil
+        profileImagePathUrl: String? = nil,
+        mainCategoryVector: [Double]? = nil
+
     ) {
         self.id = id
         self.name = name
@@ -54,5 +57,6 @@ struct User: Codable{
         self.didCompleteOnboarding = false
         
         self.premium = false
+        self.mainCategoryVector = mainCategoryVector
     }
 }

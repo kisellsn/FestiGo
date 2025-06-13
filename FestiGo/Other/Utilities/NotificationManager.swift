@@ -1,4 +1,13 @@
+//
+//  NotificationManager.swift
+//  FestiGo
+//
+//  Created by kisellsn on 05/06/2025.
+//
+
+
 import UserNotifications
+import Foundation
 
 class NotificationManager {
     static let shared = NotificationManager()

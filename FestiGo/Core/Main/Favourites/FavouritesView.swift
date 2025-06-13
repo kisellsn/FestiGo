@@ -68,11 +68,13 @@ struct FavouritesView: View {
                     .padding(.top, 100)
                     .transition(.opacity)
                     .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                    .padding(.bottom, 80)
                 }
             }
             .onAppear {
                 favouritesVM.getFavourites()
             }
+            
 //            .onReceive(NotificationCenter.default.publisher(for: .favouritesDidChange)) { _ in
 //                favouritesVM.getFavourites()
 //            }

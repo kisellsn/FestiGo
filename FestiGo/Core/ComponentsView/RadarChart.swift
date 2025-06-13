@@ -1,4 +1,14 @@
-struct RadarChart: View {
+//
+//  RadarChart.swift
+//  FestiGo
+//
+//  Created by kisellsn on 06/06/2025.
+//
+
+import SwiftUI
+
+
+struct RadarChartView: View {
     let data: [Double]
     let labels: [String]
     

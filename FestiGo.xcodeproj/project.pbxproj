@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B448D1A2DF1CEB6004AE26D /* Deeplink in Frameworks */ = {isa = PBXBuildFile; productRef = 0B448D192DF1CEB6004AE26D /* Deeplink */; };
 		0B7994C42DD2B05800CF3C23 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0B7994C32DD2B05800CF3C23 /* FirebaseMessaging */; };
 		0B8CB4FC2D81894200636B3E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0B8CB4FB2D81894200636B3E /* FirebaseAuth */; };
 		0B8CB4FE2D81894200636B3E /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0B8CB4FD2D81894200636B3E /* FirebaseCore */; };
@@ -51,6 +52,7 @@
 				0BB6E6192D9DD5C80045706F /* GoogleSignInSwift in Frameworks */,
 				0B7994C42DD2B05800CF3C23 /* FirebaseMessaging in Frameworks */,
 				0B8CB4FE2D81894200636B3E /* FirebaseCore in Frameworks */,
+				0B448D1A2DF1CEB6004AE26D /* Deeplink in Frameworks */,
 				0BB6E6172D9DD5C80045706F /* GoogleSignIn in Frameworks */,
 				0B8CB4FC2D81894200636B3E /* FirebaseAuth in Frameworks */,
 				0B8CB5002D81894200636B3E /* FirebaseFirestore in Frameworks */,
@@ -110,6 +112,7 @@
 				0BB6E6182D9DD5C80045706F /* GoogleSignInSwift */,
 				0BCC11782DC8F0A000B34D7D /* Kingfisher */,
 				0B7994C32DD2B05800CF3C23 /* FirebaseMessaging */,
+				0B448D192DF1CEB6004AE26D /* Deeplink */,
 			);
 			productName = FestiGo;
 			productReference = 0B8CB45B2D81882800636B3E /* FestiGo.app */;
@@ -122,6 +125,9 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				KnownAssetTags = (
+					E,
+				);
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
@@ -144,6 +150,7 @@
 				0B8CB4FA2D81894200636B3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				0BB6E6152D9DD5C80045706F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				0BCC11772DC8F0A000B34D7D /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				0B448D182DF1CEB6004AE26D /* XCRemoteSwiftPackageReference "Deeplink" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0B8CB45C2D81882800636B3E /* Products */;
@@ -405,6 +412,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0B448D182DF1CEB6004AE26D /* XCRemoteSwiftPackageReference "Deeplink" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TizianoCoroneo/Deeplink";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		0B8CB4FA2D81894200636B3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -432,6 +447,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0B448D192DF1CEB6004AE26D /* Deeplink */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B448D182DF1CEB6004AE26D /* XCRemoteSwiftPackageReference "Deeplink" */;
+			productName = Deeplink;
+		};
 		0B7994C32DD2B05800CF3C23 /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0B8CB4FA2D81894200636B3E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

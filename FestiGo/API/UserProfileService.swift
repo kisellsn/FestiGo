@@ -31,13 +31,25 @@ class UserProfileService {
         }.resume()
     }
 
-    func updateProfile(completion: ((Bool) -> Void)? = nil) {
-        guard let request = TokenManager.shared.authorizedRequest(to: "/user/update_profile", method: "POST") else {
+    func updateProfile(eventId: String, completion: ((Bool) -> Void)? = nil) {
+        guard var request = TokenManager.shared.authorizedRequest(to: "/user/update_profile", method: "POST") else {
             print("❌ Failed to create request for update_profile")
             completion?(false)
             return
         }
- 
+
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let json: [String: String] = ["event_id": eventId]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: json)
+        } catch {
+            print("❌ JSON serialization error:", error.localizedDescription)
+            completion?(false)
+            return
+        }
+
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("❌ Update profile error: \(error.localizedDescription)")
@@ -48,6 +60,7 @@ class UserProfileService {
             }
         }.resume()
     }
+
 
     func getRecommendations(completion: @escaping ([String]) -> Void) {
         guard let request = TokenManager.shared.authorizedRequest(to: "/user/get_recommendations") else {
@@ -80,4 +93,51 @@ class UserProfileService {
             }
         }.resume()
     }
+    
+    func getSimilarEvents(completion: @escaping ([Event], String?) -> Void) {
+        guard let request = TokenManager.shared.authorizedRequest(to: "/user/get_similar_events") else {
+            print("❌ Failed to create request for get_similar_events")
+            completion([], nil)
+            return
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("❌ Get similar events error: \(error.localizedDescription)")
+                completion([], nil)
+                return
+            }
+
+            guard let data = data else {
+                print("❌ No data received for similar events")
+                completion([], nil)
+                return
+            }
+
+            do {
+                struct Response: Decodable {
+                    let similar: [String]
+                    let lastLikedEventId: String?
+                }
+
+                let decoded = try JSONDecoder().decode(Response.self, from: data)
+                print("✅ Similar event IDs received:", decoded.similar)
+
+                Task {
+                    do {
+                        let events = try await EventsManager.shared.getEventsByIds(ids: decoded.similar)
+                        completion(events, decoded.lastLikedEventId)
+                    } catch {
+                        print("❌ Failed to fetch events by IDs:", error)
+                        completion([], decoded.lastLikedEventId)
+                    }
+                }
+            } catch {
+                print("❌ JSON decoding error for similar events: \(error.localizedDescription)")
+                completion([], nil)
+            }
+        }.resume()
+    }
+
+
 }

@@ -169,6 +169,21 @@ struct SettingsView: View {
                     isSelecting = true
                 }
             }
+            .onChange(of: viewModel.notificationsEnabled) { _, newValue in
+                if newValue {
+                    NotificationManager.shared.requestPermission()
+
+                    Task {
+                        if let topEvent = await viewModel.fetchTopRecommendedEvent() {
+                            NotificationManager.shared.sendLocalNotification(
+                                title: "🔥 Рекомендована подія",
+                                body: topEvent.localizedName
+                            )
+                        }
+                    }
+                }
+            }
+
 
         }
     }

@@ -75,7 +75,6 @@ class OnboardingViewModel: ObservableObject {
             }
         }
 
-        // Додати координати для запитання з локацією
         if let location = answers[3]?.first {
             var locationDict: [String: Any] = ["title": location]
             if let coords = selectedLocationCoordinates {

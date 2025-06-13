@@ -49,6 +49,18 @@ struct EventDetailView: View {
                                 viewModel.shareEvent()
                             }
                         )
+//                        if let shareContent = viewModel.shareContent {
+//                            ShareLink(item: shareContent) {
+//                                Image(systemName: "square.and.arrow.up")
+//                                    .foregroundColor(.saffron)
+//                                    .font(.title2)
+//                                    .padding(8)
+//                                    .background(Color.white)
+//                                    .clipShape(Circle())
+//                                    .shadow(radius: 3)
+//                            }
+//                        }
+
                     }
                     .offset(x: -20, y: (event.imageUrl != nil ? 300 : 100) - 30)
                 }
@@ -125,7 +137,10 @@ struct EventDetailView: View {
                 // 6. Save to Calendar
                 if viewModel.isUserAuthenticated {
                     Button {
-                        viewModel.addToCalendar(openURL: openURL)
+                        Task {
+                            await viewModel.calendarLike()
+                            viewModel.addToCalendar(openURL: openURL)
+                        }
                     } label: {
                         Label("Save to Calendar", systemImage: "calendar.badge.plus")
                             .font(.headline)

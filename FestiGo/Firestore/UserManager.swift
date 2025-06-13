@@ -116,6 +116,14 @@ final class UserManager {
     func getAllUserFavouriteEvents(userId: String) async throws -> [UserFavouriteEvent] {
         try await userFavouriteEventsCollection(userId: userId).getDocuments(as: UserFavouriteEvent.self)
     }
+    func areFavouritesExist(userId: String) async throws -> Bool {
+        let snapshot = try await userFavouriteEventsCollection(userId: userId)
+            .limit(to: 1)
+            .getDocuments()
+        
+        return !snapshot.documents.isEmpty
+    }
+
     
     func getUser(userId: String) async throws -> User {
         try await userDocument(userId: userId).getDocument(as: User.self)

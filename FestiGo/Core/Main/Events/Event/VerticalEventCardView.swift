@@ -15,10 +15,17 @@ struct VerticalEventCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             ZStack {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.2))
+//                Rectangle()
+//                    .fill(Color.gray.opacity(0.2))
+//                    .frame(height: 90)
+//                    .cornerRadius(12)
+                Image("default_img")
+                    .resizable()
+                    .scaledToFill()
                     .frame(height: 90)
                     .cornerRadius(12)
+                    .clipped()
+
                 if let imageUrl = event.imageUrl, let url = URL(string: imageUrl) {
                     KFImage(url)
                         .placeholder {

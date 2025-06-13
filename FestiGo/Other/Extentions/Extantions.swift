@@ -99,6 +99,7 @@ extension Query {
 
 extension Notification.Name {
     static let favouritesDidChange = Notification.Name("favouritesDidChange")
+    static let openEventFromDeepLink = Notification.Name("openEventFromDeepLink")
 }
 
 
@@ -117,5 +118,6 @@ extension String {
         return regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count)) != nil
     }
 }
+
 
 

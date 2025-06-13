@@ -14,7 +14,7 @@ import GoogleSignIn
 class SettingsViewModel: ObservableObject {
     @Published var defaultLocation: String = ""
     @Published var optimalRangeKm: Double = 50
-    @Published var notificationsEnabled: Bool = true
+    @Published var notificationsEnabled: Bool = false
 
     
     private var hasLoadedFromFirestore = false
@@ -122,5 +122,34 @@ class SettingsViewModel: ObservableObject {
             }
         }
     }
+    
+    
+//    func fetchTopRecommendedEvent() async -> (title: String)? {
+//        await Task.sleep(1_000_000_000)
+//        return (title: "Фестиваль музики у Львові 🎶")
+//    }
+    func fetchTopRecommendedEvent() async -> Event? {
+        return await withCheckedContinuation { continuation in
+            UserProfileService.shared.getRecommendations { ids in
+                guard let topId = ids.first else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+
+                Task {
+                    do {
+                        let events = try await EventsManager.shared.getEventsByIds(ids: [topId])
+                        print(events.first?.localizedName ?? "подія")
+                        continuation.resume(returning: events.first)
+                    } catch {
+                        print("❌ Не вдалося завантажити подію: \(error)")
+                        continuation.resume(returning: nil)
+                    }
+                }
+            }
+        }
+    }
+
+
 }
 

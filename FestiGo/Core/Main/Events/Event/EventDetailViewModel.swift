@@ -69,7 +69,16 @@ class EventDetailViewModel: ObservableObject {
         }
 //        NotificationCenter.default.post(name: .favouritesDidChange, object: nil)
     }
+    
+    func calendarLike() async {
+        guard let eventId = event?.id,
+              let userId = Auth.auth().currentUser?.uid else { return }
 
+        if !isLiked {
+            await addUserFavouriteEvent(userId: userId, eventId: eventId)
+            isLiked = true
+        }
+    }
 
     
     func removeFromFavourites(userId: String, eventId: String) async {
@@ -79,27 +88,45 @@ class EventDetailViewModel: ObservableObject {
     
     func addUserFavouriteEvent(userId: String, eventId: String) async{
         Task {
-//            let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
             try? await UserManager.shared.addUserFavouriteEvent(userId: userId, eventId: eventId)
+            UserProfileService.shared.updateProfile(eventId: eventId) { success in
+                print("Update result: \(success)")
+            }
         }
     }
     
+//    func shareEvent() {
+//        guard let event = event else { return }
+//
+//        var message = "Check out this event: \(event.name)"
+//        
+//        if let link = event.link {
+//            message += "\n\nMore info: \(link)"
+//        }
+//
+//        let av = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+//
+//        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//           let rootVC = scene.windows.first?.rootViewController {
+//            rootVC.present(av, animated: true, completion: nil)
+//        }
+//    }
     func shareEvent() {
         guard let event = event else { return }
 
-        var message = "Check out this event: \(event.name)"
-        
-        if let link = event.link {
-            message += "\n\nMore info: \(link)"
-        }
+        var items: [Any] = []
 
-        let av = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+        let message = "Check out this event: \(event.name)\n\n\(event.venue?.localizedAddress ?? "")\n\nMore info: \(event.link ?? "")"
+        items.append(message)
+
+        let av = UIActivityViewController(activityItems: items, applicationActivities: nil)
 
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootVC = scene.windows.first?.rootViewController {
             rootVC.present(av, animated: true, completion: nil)
         }
     }
+
 }
 
 private extension String {
@@ -107,5 +134,22 @@ private extension String {
         self.replacingOccurrences(of: "-", with: "")
             .replacingOccurrences(of: ":", with: "")
             .replacingOccurrences(of: "+0000", with: "Z")
+    }
+}
+
+struct ShareEventContent: Transferable {
+    let title: String
+    let address: String
+    let link: URL
+    let image: Image?
+
+    static var transferRepresentation: some TransferRepresentation {
+        ProxyRepresentation(exporting: \.title)
+    }
+}
+
+extension ShareEventContent: CustomStringConvertible {
+    var description: String {
+        "\(title)\n\(address)\n\nMore info: \(link.absoluteString)"
     }
 }
